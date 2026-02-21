@@ -58,7 +58,7 @@ fun HomeScreen() {
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF1F19D9),
                     modifier = Modifier
-                        .padding(bottom = 36.dp)
+                        .padding(bottom = 16.dp)
                 )
                 SearchCard()
             }
@@ -101,6 +101,13 @@ fun SearchCard(){
 
             )
         }
+        TextField(label = { Text("Количество проживающих") },
+            value = text,
+            onValueChange = {text = it},
+            modifier = Modifier.clip(RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+        )
+
         ButtonSearchHome(
             onClick = {}
         ){
