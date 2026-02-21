@@ -21,7 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,21 +47,23 @@ fun CatalogScreen() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
-            item { TourCard() }
-            item { TourCard() }
-            item { TourCard() }
-            item { TourCard() }
-            item { TourCard() }
+            item { TourCard(R.drawable.hotel1) }
+            item { TourCard(R.drawable.hotel1) }
+            item { TourCard(R.drawable.hotel1) }
+            item { TourCard(R.drawable.hotel1) }
+            item { TourCard(R.drawable.hotel1) }
+            item { TourCard(R.drawable.hotel1) }
         }
     }
 }
 
 @Composable
-fun TourCard(){
+fun TourCard(idImg: Int){
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF393EEA), RoundedCornerShape(8.dp))
+            .shadow(10.dp, RectangleShape)
+            .background(Color(0xFFFFFFFF), RoundedCornerShape(8.dp))
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -68,7 +73,7 @@ fun TourCard(){
                 .clip(RoundedCornerShape(8.dp))
             ){
                     Image(
-                        painter = painterResource(id = R.drawable.hotel1),
+                        painter = painterResource(id = idImg),
                         contentDescription = "TravelImg",
                         modifier = Modifier
                             .width(170.dp)
@@ -84,12 +89,12 @@ fun TourCard(){
                     text = "Grand Mediterranea Resort & Spa",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
-                    color = Color.White
+                    color = Color.Black
                 )
                 Text(
                     text = "Турция, Анталия",
                     fontSize = 14.sp,
-                    color = Color.White
+                    color = Color.Black
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
@@ -101,7 +106,7 @@ fun TourCard(){
                         text = " (5 звезд)",
                         fontSize = 12.sp,
                         modifier = Modifier.padding(start = 4.dp),
-                        color = Color.White
+                        color = Color.Black
                     )
                 }
                 ButtonTourInfo(
@@ -110,13 +115,15 @@ fun TourCard(){
                     Text(
                         text = "Подробнее",
                         fontSize = 10.sp,
-                        color = Color.Black
+                        color = Color.White
                     )
                 }
             }
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

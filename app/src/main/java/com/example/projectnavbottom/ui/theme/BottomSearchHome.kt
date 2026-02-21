@@ -1,7 +1,7 @@
 package com.example.projectnavbottom.ui.theme
 
-import android.widget.Button
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,14 +13,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ButtonTourInfo(
+fun ButtonSearchHome(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
     Button(
         modifier = modifier
-            .height(38.dp)
+            .height(50.dp)
+            .fillMaxWidth()
             .padding(2.dp),
         onClick = onClick,
         shape = RoundedCornerShape(size = 8.dp),
@@ -34,4 +35,3 @@ fun ButtonTourInfo(
 
     }
 }
-
