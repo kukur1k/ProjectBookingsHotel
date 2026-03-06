@@ -1,7 +1,6 @@
 package com.example.projectnavbottom.navigation
 
 
-import android.window.SplashScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -26,13 +25,10 @@ fun AppNavigation(navController: NavHostController){
             ProfileScreen()
         }
         composable(Screen.Catalog.route) {
-            CatalogScreen()
+            CatalogScreen(navController)
         }
         composable(Screen.Bookings.route) {
             BookingsScreen()
-        }
-        composable(Screen.Home.route) {
-            HomeScreen()
         }
         composable(Screen.BookingsInfo.route) {
             BookingsInfoScreen(

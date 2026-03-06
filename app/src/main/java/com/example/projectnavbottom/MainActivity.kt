@@ -34,7 +34,10 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.example.projectnavbottom.navigation.MainAppScaffold
 import com.example.projectnavbottom.screens.CatalogScreen
+import com.example.projectnavbottom.screens.TourInfoScreen
 import com.example.projectnavbottom.ui.theme.ProjectNavBottomTheme
 
 
@@ -43,7 +46,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            CatalogScreen()
+            ProjectNavBottomTheme {
+                val navController = rememberNavController()
+                MainAppScaffold(navController)
+            }
                 }
             }
         }

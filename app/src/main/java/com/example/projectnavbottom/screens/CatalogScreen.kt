@@ -1,5 +1,6 @@
 package com.example.projectnavbottom.screens
 
+import android.icu.text.CaseMap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
@@ -31,13 +33,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.projectnavbottom.HomeScreen
 import com.example.projectnavbottom.R
 import com.example.projectnavbottom.navigation.Screen
 import com.example.projectnavbottom.ui.theme.ButtonTourInfo
 
 @Composable
-fun CatalogScreen() {
+fun CatalogScreen(navController: NavHostController) {
     Scaffold()
     { paddingValues ->
         LazyColumn(
@@ -47,18 +52,37 @@ fun CatalogScreen() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
-            item { TourCard(R.drawable.hotel1) }
-            item { TourCard(R.drawable.hotel1) }
-            item { TourCard(R.drawable.hotel1) }
-            item { TourCard(R.drawable.hotel1) }
-            item { TourCard(R.drawable.hotel1) }
-            item { TourCard(R.drawable.hotel1) }
+            item { TourCard(R.drawable.hotel1,
+                "Grand Mediterranea Resort & Spa",
+                "Турция, Анталия",
+                navController = navController) }
+            item { TourCard(R.drawable.hotel2,
+                "Family Hotel Marrton",
+                "Турция, Анталия",
+                navController = navController) }
+            item { TourCard(R.drawable.hotel3,
+                "Hotel Marriot Batumi",
+                "Батум, Грузия",
+                navController = navController) }
+            item { TourCard(R.drawable.hotel1,
+                "Grand Mediterranea Resort & Spa",
+                "Турция, Анталия",
+                navController = navController)}
+            item { TourCard(R.drawable.hotel2,
+                "Family Hotel Marrton",
+                "Турция, Анталия",
+                navController = navController) }
+            item { TourCard(R.drawable.hotel3,
+                "Hotel Marriot Batumi",
+                "Батум, Грузия",
+                navController = navController) }
+
         }
     }
 }
 
 @Composable
-fun TourCard(idImg: Int){
+fun TourCard(idImg: Int, title: String, country: String, navController: NavHostController){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,7 +91,7 @@ fun TourCard(idImg: Int){
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Row() {
+        Column  {
             Box( modifier = Modifier
                 .padding(8.dp)
                 .clip(RoundedCornerShape(8.dp))
@@ -76,7 +100,7 @@ fun TourCard(idImg: Int){
                         painter = painterResource(id = idImg),
                         contentDescription = "TravelImg",
                         modifier = Modifier
-                            .width(170.dp)
+                            .fillMaxWidth()
                             .background(color = Color.White)
                             .padding(2.dp)
                             .clip(RoundedCornerShape(8.dp))
@@ -86,17 +110,17 @@ fun TourCard(idImg: Int){
                 .padding(10.dp)
             ) {
                 Text(
-                    text = "Grand Mediterranea Resort & Spa",
+                    text = title,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = Color.Black
                 )
                 Text(
-                    text = "Турция, Анталия",
+                    text = country,
                     fontSize = 14.sp,
                     color = Color.Black
                 )
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically){
                     Text(
                         text = "★★★★★",
                         color = Color(0xFFFFD700),
@@ -106,15 +130,18 @@ fun TourCard(idImg: Int){
                         text = " (5 звезд)",
                         fontSize = 12.sp,
                         modifier = Modifier.padding(start = 4.dp),
-                        color = Color.Black
+                        color = Color.Black,
+                        softWrap = false
                     )
                 }
                 ButtonTourInfo(
-                    onClick = {}
+                    onClick = {
+                        navController.navigate(Screen.TourInfo.route)
+                    }
                 ){
                     Text(
                         text = "Подробнее",
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
                         color = Color.White
                     )
                 }
@@ -128,5 +155,5 @@ fun TourCard(idImg: Int){
 @Preview(showBackground = true)
 @Composable
 fun CatalogScreenPreview() {
-    CatalogScreen()
+    CatalogScreen(navController = rememberNavController())
 }
