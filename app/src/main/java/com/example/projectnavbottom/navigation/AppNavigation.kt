@@ -28,7 +28,7 @@ fun AppNavigation(navController: NavHostController){
             CatalogScreen(navController)
         }
         composable(Screen.Bookings.route) {
-            BookingsScreen()
+            BookingsScreen(navController = navController)
         }
         composable(Screen.BookingsInfo.route) {
             BookingsInfoScreen(

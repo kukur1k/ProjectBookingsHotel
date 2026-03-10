@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.projectnavbottom.HomeScreen
 import com.example.projectnavbottom.R
 import com.example.projectnavbottom.navigation.Screen
 import com.example.projectnavbottom.screens.viewmodel.LoginScreenViewModel
@@ -87,7 +87,8 @@ fun ProfileScreen(
 
         StyledButton(
             onClick = {},
-            modifier = Modifier.padding(top = 30.dp)
+            modifier = Modifier.padding(top = 30.dp),
+            backColor = Color.Black
         ){
             Text(
                 text = "Войти",

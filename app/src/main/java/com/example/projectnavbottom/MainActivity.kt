@@ -54,39 +54,3 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun HomeScreen() {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Бронирование") },
-                colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            )
-        }
-    ) { paddingValues ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.travelpng),
-                contentDescription = "TravelImg",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-            )
-        }
-
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-        HomeScreen()
-}
