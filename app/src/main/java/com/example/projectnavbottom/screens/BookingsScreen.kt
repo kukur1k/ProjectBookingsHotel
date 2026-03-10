@@ -6,6 +6,7 @@ import android.widget.DatePicker
 import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.colorspace.WhitePoint
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -168,65 +170,116 @@ fun MyBookingCard(idImg: Int, title: String, date: String, cost: String, navCont
                         sheetState = sheetState,
                         onDismissRequest = { isSheetOpen = false }
                     ) {
-                        Column(modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                        //Переменные для DataSelecter-а
+                        val context = LocalContext.current
+                        val calendar = Calendar.getInstance()
+                        val year = calendar.get(Calendar.YEAR)
+                        val month = calendar.get(Calendar.MONTH)
+                        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+
+                        Column(modifier = Modifier.padding(20.dp).fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally) {
 
-                            //Проверка на пустоту дат, если не пустые - выводим
-                            if(selectedDateIn.isNotEmpty()){
-                                Text(
-                                    text = "Дата заезда: $selectedDateIn",
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.padding(bottom = 16.dp)
-                                )
-                            }
-                            if(selectedDateOut.isNotEmpty()){
-                                Text(
-                                    text = "Дата выезда: $selectedDateOut",
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.padding(bottom = 16.dp)
-                                )
-                            }
+                            //первая строка с датой заезда
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start  = 20.dp, end  = 20.dp, bottom = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically)
+                            {
+                                //Проверка на пустоту дат, если не пустые - выводим
+                                if(selectedDateIn.isNotEmpty()){
+                                    Text(
+                                        text = "Дата заезда: $selectedDateIn",
+                                        fontSize = 16.sp,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                                else{
+                                    Text(
+                                        text = "Дата заезда: --/--/--",
+                                        fontSize = 16.sp,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
 
-                            //Переменные для DataSelecter-а
-                            val context = LocalContext.current
-                            val calendar = Calendar.getInstance()
-                            val year = calendar.get(Calendar.YEAR)
-                            val month = calendar.get(Calendar.MONTH)
-                            val day = calendar.get(Calendar.DAY_OF_MONTH)
+                                //Кнопка выбора даты заезда
+                                StyledButton(
+                                    backColor = Color.White,
+                                    onClick = {
+                                        android.app.DatePickerDialog(
+                                            context,
+                                            { _, year, month, dayOfMonth ->
+                                                selectedDateIn = "$dayOfMonth.${month + 1}.$year"
+                                            },
+                                            year, month, day
+                                        ).show()
+                                    },
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.calendar),
+                                        contentDescription = "SelectDate",
+                                        modifier = Modifier
+                                            .width(40.dp)
+                                            .padding(2.dp)
+                                            .clip(RoundedCornerShape(8.dp))
+                                    )
+                                }
 
-                            StyledButton(
-                                onClick = {
-                                    android.app.DatePickerDialog(
-                                        context,
-                                        { _, year, month, dayOfMonth ->
-                                            selectedDateIn = "$dayOfMonth.${month + 1}.$year"
-                                        },
-                                        year, month, day
-                                    ).show()
-                                },
-                                backColor = Color(0xFF1F19D9)
-                            ) {
-                                Text("Выбрать дату заезда", color = Color.White)
-                            }
 
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            StyledButton(
-                                onClick = {
-                                    android.app.DatePickerDialog(
-                                        context,
-                                        { _, year, month, dayOfMonth ->
-                                            selectedDateOut = "$dayOfMonth.${month + 1}.$year"
-                                        },
-                                        year, month, day
-                                    ).show()
-                                },
-                                backColor = Color(0xFF1F19D9)
-                            ) {
-                                Text("Выбрать дату выезда", color = Color.White)
                             }
 
-                            Spacer(modifier = Modifier.height(8.dp))
+                            //вторая строка с датой выезда
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start  = 20.dp, end  = 20.dp, bottom = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically)
+                            {
+                                if (selectedDateOut.isNotEmpty()) {
+                                    Text(
+                                        text = "Дата выезда: $selectedDateOut",
+                                        fontSize = 16.sp,
+                                        modifier = Modifier.weight(1f)
+
+                                    )
+                                } else {
+                                    Text(
+                                        text = "Дата выезда: --/--/--",
+                                        fontSize = 16.sp,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+
+                                StyledButton(
+                                    backColor = Color.White,
+                                    onClick = {
+                                        android.app.DatePickerDialog(
+                                            context,
+                                            { _, year, month, dayOfMonth ->
+                                                selectedDateOut = "$dayOfMonth.${month + 1}.$year"
+                                            },
+                                            year, month, day
+                                        ).show()
+                                    },
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.calendar),
+                                        contentDescription = "SelectDate",
+                                        modifier = Modifier
+                                            .width(40.dp)
+                                            .padding(2.dp)
+                                            .clip(RoundedCornerShape(8.dp))
+                                    )
+
+
+                                }
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                            }
+
+
+
+
 
 
 

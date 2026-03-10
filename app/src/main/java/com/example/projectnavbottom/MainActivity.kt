@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.projectnavbottom.navigation.MainAppScaffold
 import com.example.projectnavbottom.screens.CatalogScreen
