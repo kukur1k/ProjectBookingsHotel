@@ -1,34 +1,33 @@
 package com.example.projectnavbottom.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.projectnavbottom.R
+import androidx.navigation.NavHostController
 import com.example.projectnavbottom.navigation.Screen
 
 @Composable
-fun SplashScreen(
-    onNextNavigate:()->Unit
-) {
-
+fun RegisterScreen(navController: NavHostController){
     Column(
-        Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        LaunchedEffect(Unit) {
-            onNextNavigate()
-        }
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        Text(
+            text = "Регистрация",
+            fontSize = 40.sp,
+            modifier = Modifier
+                .padding(top = 100.dp)
+        )
+
     }
 }

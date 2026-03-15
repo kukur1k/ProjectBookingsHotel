@@ -10,6 +10,7 @@ import com.example.projectnavbottom.screens.BookingsScreen
 import com.example.projectnavbottom.screens.CatalogScreen
 import com.example.projectnavbottom.screens.HomeScreen
 import com.example.projectnavbottom.screens.ProfileScreen
+import com.example.projectnavbottom.screens.RegisterScreen
 import com.example.projectnavbottom.screens.SplashScreen
 import com.example.projectnavbottom.screens.TourInfoScreen
 
@@ -22,7 +23,10 @@ fun AppNavigation(navController: NavHostController){
             HomeScreen()
         }
         composable(Screen.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(navController)
+        }
+        composable(Screen.Register.route) {
+            RegisterScreen(navController)
         }
         composable(Screen.Catalog.route) {
             CatalogScreen(navController)

@@ -32,15 +32,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.projectnavbottom.R
 import com.example.projectnavbottom.navigation.Screen
 import com.example.projectnavbottom.screens.viewmodel.LoginScreenViewModel
 import com.example.projectnavbottom.ui.theme.StyledButton
 
 
+
 @Composable
 fun ProfileScreen(
-    onNavigateTo: () -> Unit = {},
+    navController: NavHostController,
     viewModel: LoginScreenViewModel = viewModel()
 ){
     Box(modifier = Modifier.fillMaxSize()){
@@ -116,12 +119,15 @@ fun ProfileScreen(
                 )
             }
             Text(
-                text = "Еще не зарегистрированны?",
+                text = "Еще не зарегистрированны? Зарегистрируйтесь",
                 fontSize = 16.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(top = 60.dp)
+                    .clickable  {
+                        navController.navigate(Screen.Register.route)
+                    }
             )
         }
     }
@@ -134,5 +140,5 @@ fun ProfileScreen(
 @Composable
 @Preview(showBackground = true)
 fun ProfileScreenPreview() {
-    ProfileScreen()
+    ProfileScreen(navController = rememberNavController())
 }

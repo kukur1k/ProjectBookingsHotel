@@ -2,6 +2,7 @@ package com.example.projectnavbottom.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -83,6 +85,24 @@ fun HomeScreen() {
 fun SearchCard(){
     var textLand by remember {mutableStateOf("")}
     var textCount by remember {mutableStateOf("")}
+    var expanded by remember { mutableStateOf(false) }
+    var expandedCount by remember { mutableStateOf(false) }
+
+
+    val Lands = listOf(
+        "Турция",
+        "Египет",
+        "Таиланд",
+        "ОАЭ",
+        "Германия",
+        "Франция",
+        "Италия"
+    )
+
+    val CountGuest = listOf(
+        "1", "2", "3", "4"
+    )
+
     Column(
         modifier = Modifier
             .shadow(10.dp, RectangleShape)
@@ -91,14 +111,44 @@ fun SearchCard(){
             .clip(RoundedCornerShape(8.dp)),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ){
-        TextField(label = { Text("Выберите направление") },
-            value = textLand,
-            onValueChange = {textLand = it},
-            modifier = Modifier.clip(RoundedCornerShape(8.dp))
-            .fillMaxWidth()
-        )
+        Box(modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = textLand,
+                onValueChange = {},
+                label = { Text("Выберите направление") },
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { expanded = true }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "Выбрать направление"
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = true }
+            )
 
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = true },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+            ) {
+                Lands.forEach { land ->
+                    DropdownMenuItem(
+                        text = { Text(text = land) },
+                        onClick = {
+                            textLand = land
+                            expanded = false
+                        }
+                    )
+                }
+            }
 
+        }
 
         //Переменные для DataSelecter-а
         val context = LocalContext.current
@@ -113,7 +163,7 @@ fun SearchCard(){
             OutlinedTextField(
                 value = selectedDateIn,
                 onValueChange = { },
-                label = { Text(text = "Дата заезда") },
+                label = { Text(text = "Дата заезда", fontSize = 15.sp) },
                 readOnly = true,
                 trailingIcon = {
                     IconButton(onClick = { android.app.DatePickerDialog(
@@ -137,7 +187,7 @@ fun SearchCard(){
             OutlinedTextField(
                 value = selectedDateOut,
                 onValueChange = { },
-                label = { Text("Дата выезда") },
+                label = { Text("Дата выезда", fontSize = 15.sp) },
                 readOnly = true,
                 trailingIcon = {
                     IconButton(onClick = { android.app.DatePickerDialog(
@@ -158,13 +208,44 @@ fun SearchCard(){
 
             )
         }
-        TextField(label = { Text("Количество проживающих") },
-            value = textCount,
-            onValueChange = {textCount = it},
-            modifier = Modifier.clip(RoundedCornerShape(8.dp))
-                .fillMaxWidth()
-                .background(Color.White)
-        )
+        Box(modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = textCount,
+                onValueChange = {},
+                label = { Text(text = "Количество проживающих") },
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { expandedCount = true }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "Количество проживающих"
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expandedCount = true }
+            )
+
+            DropdownMenu(
+                expanded = expandedCount,
+                onDismissRequest = { expandedCount = true },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+            ) {
+                CountGuest.forEach { count ->
+                    DropdownMenuItem(
+                        text = { Text(text = count) },
+                        onClick = {
+                            textCount = count
+                            expandedCount = false
+                        }
+                    )
+                }
+            }
+
+        }
 
         ButtonSearchHome(
             onClick = {}
@@ -177,6 +258,7 @@ fun SearchCard(){
         }
     }
 }
+
 
 
 @Preview(showBackground = true)
