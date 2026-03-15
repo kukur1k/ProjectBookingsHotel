@@ -21,13 +21,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,9 +65,24 @@ import com.example.projectnavbottom.ui.theme.StyledButton
 import java.sql.Date
 import java.util.Calendar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookingsScreen(navController: NavController) {
-    Scaffold()
+    Scaffold(topBar = {
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.White,
+                titleContentColor = Color(0xFF1F19D9),
+            ),
+            title = {
+                Text("История бронирования", fontWeight = FontWeight.SemiBold)
+            },
+            modifier = Modifier
+                .shadow(10.dp, RectangleShape)
+                .clip(RoundedCornerShape(10.dp))
+
+        )
+    })
     { paddingValues ->
         LazyColumn(
             modifier = Modifier
@@ -187,45 +210,29 @@ fun MyBookingCard(idImg: Int, title: String, date: String, cost: String, navCont
                                 .padding(start  = 20.dp, end  = 20.dp, bottom = 8.dp),
                                 verticalAlignment = Alignment.CenterVertically)
                             {
-                                //Проверка на пустоту дат, если не пустые - выводим
-                                if(selectedDateIn.isNotEmpty()){
-                                    Text(
-                                        text = "Дата заезда: $selectedDateIn",
-                                        fontSize = 16.sp,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                }
-                                else{
-                                    Text(
-                                        text = "Дата заезда: --/--/--",
-                                        fontSize = 16.sp,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                }
-
-                                //Кнопка выбора даты заезда
-                                StyledButton(
-                                    backColor = Color.White,
-                                    onClick = {
-                                        android.app.DatePickerDialog(
+                                OutlinedTextField(
+                                    value = selectedDateIn,
+                                    onValueChange = { },
+                                    label = { Text("Дата заезда") },
+                                    readOnly = true,
+                                    trailingIcon = {
+                                        IconButton(onClick = { android.app.DatePickerDialog(
                                             context,
                                             { _, year, month, dayOfMonth ->
                                                 selectedDateIn = "$dayOfMonth.${month + 1}.$year"
                                             },
                                             year, month, day
-                                        ).show()
+                                        ).show() }) {
+                                            Icon(
+                                                imageVector = Icons.Default.DateRange,
+                                                contentDescription = "Select date"
+                                            )
+                                        }
                                     },
-                                ) {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.calendar),
-                                        contentDescription = "SelectDate",
-                                        modifier = Modifier
-                                            .width(40.dp)
-                                            .padding(2.dp)
-                                            .clip(RoundedCornerShape(8.dp))
-                                    )
-                                }
+                                    modifier = Modifier
+                                        .weight(1f)
 
+                                )
 
                             }
 
@@ -235,44 +242,31 @@ fun MyBookingCard(idImg: Int, title: String, date: String, cost: String, navCont
                                 .padding(start  = 20.dp, end  = 20.dp, bottom = 8.dp),
                                 verticalAlignment = Alignment.CenterVertically)
                             {
-                                if (selectedDateOut.isNotEmpty()) {
-                                    Text(
-                                        text = "Дата выезда: $selectedDateOut",
-                                        fontSize = 16.sp,
-                                        modifier = Modifier.weight(1f)
 
-                                    )
-                                } else {
-                                    Text(
-                                        text = "Дата выезда: --/--/--",
-                                        fontSize = 16.sp,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                }
-
-                                StyledButton(
-                                    backColor = Color.White,
-                                    onClick = {
-                                        android.app.DatePickerDialog(
+                                OutlinedTextField(
+                                    value = selectedDateOut,
+                                    onValueChange = { },
+                                    label = { Text("Дата выезда") },
+                                    readOnly = true,
+                                    trailingIcon = {
+                                        IconButton(onClick = { android.app.DatePickerDialog(
                                             context,
                                             { _, year, month, dayOfMonth ->
                                                 selectedDateOut = "$dayOfMonth.${month + 1}.$year"
                                             },
                                             year, month, day
-                                        ).show()
+                                        ).show() }) {
+                                            Icon(
+                                                imageVector = Icons.Default.DateRange,
+                                                contentDescription = "Select date"
+                                            )
+                                        }
                                     },
-                                ) {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.calendar),
-                                        contentDescription = "SelectDate",
-                                        modifier = Modifier
-                                            .width(40.dp)
-                                            .padding(2.dp)
-                                            .clip(RoundedCornerShape(8.dp))
-                                    )
+                                    modifier = Modifier
+                                        .weight(1f)
 
+                                )
 
-                                }
                                 Spacer(modifier = Modifier.height(8.dp))
 
                             }

@@ -77,6 +77,8 @@ fun CardInfoScreen(idImg: Int, title: String, date: String, cost: String) {
                 .background(Color.White)
                 .fillMaxWidth()
                 .padding(10.dp)
+
+
         ) {
             Text(
                 text = "★★★★★",

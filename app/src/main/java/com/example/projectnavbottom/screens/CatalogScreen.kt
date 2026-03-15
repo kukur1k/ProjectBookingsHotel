@@ -1,8 +1,10 @@
 package com.example.projectnavbottom.screens
 
+import android.annotation.SuppressLint
 import android.icu.text.CaseMap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,8 +19,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,9 +46,25 @@ import com.example.projectnavbottom.R
 import com.example.projectnavbottom.navigation.Screen
 import com.example.projectnavbottom.ui.theme.ButtonTourInfo
 
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CatalogScreen(navController: NavHostController) {
-    Scaffold()
+    Scaffold(topBar = {
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.White,
+                titleContentColor = Color(0xFF1F19D9),
+            ),
+            title = {
+                Text("Каталог", fontWeight = FontWeight.SemiBold)
+            },
+            modifier = Modifier
+                .shadow(10.dp, RectangleShape)
+                .clip(RoundedCornerShape(10.dp))
+
+        )
+    })
     { paddingValues ->
         LazyColumn(
             modifier = Modifier
