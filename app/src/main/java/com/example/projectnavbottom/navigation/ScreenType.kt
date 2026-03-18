@@ -20,6 +20,8 @@ sealed class Screen(val route: String, val ScreenType: ScreenType){
     object TourInfo: Screen(route = "tour_info", ScreenType.WithoutBottomNav)
     object Register: Screen(route = "register", ScreenType.WithoutBottomNav)
 
+    object Login: Screen(route = "login", ScreenType.WithoutBottomNav)
+
 }
 
 sealed class NavItem(val title: String, val route: String){

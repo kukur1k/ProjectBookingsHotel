@@ -39,7 +39,7 @@ import com.example.projectnavbottom.ui.theme.StyledButton
 
 
 @Composable
-fun ProfileScreen(
+fun LoginScreen(
     navController: NavHostController,
     viewModel: LoginScreenViewModel = viewModel()
 ){
@@ -137,5 +137,5 @@ fun ProfileScreen(
 @Composable
 @Preview(showBackground = true)
 fun ProfileScreenPreview() {
-    ProfileScreen(navController = rememberNavController())
+    LoginScreen(navController = rememberNavController())
 }

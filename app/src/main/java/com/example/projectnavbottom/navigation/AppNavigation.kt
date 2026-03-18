@@ -9,7 +9,8 @@ import com.example.projectnavbottom.screens.BookingsInfoScreen
 import com.example.projectnavbottom.screens.BookingsScreen
 import com.example.projectnavbottom.screens.CatalogScreen
 import com.example.projectnavbottom.screens.HomeScreen
-import com.example.projectnavbottom.screens.ProfileScreen
+import com.example.projectnavbottom.screens.LoginScreen
+import com.example.projectnavbottom.screens.MyProfileScreen
 import com.example.projectnavbottom.screens.RegisterScreen
 import com.example.projectnavbottom.screens.SplashScreen
 import com.example.projectnavbottom.screens.TourInfoScreen
@@ -23,7 +24,7 @@ fun AppNavigation(navController: NavHostController){
             HomeScreen()
         }
         composable(Screen.Profile.route) {
-            ProfileScreen(navController)
+            MyProfileScreen(navController)
         }
         composable(Screen.Register.route) {
             RegisterScreen(navController)
@@ -44,6 +45,11 @@ fun AppNavigation(navController: NavHostController){
                 onBack = {navController.navigateUp()}
             )
         }
+
+        composable(Screen.Login.route) {
+            LoginScreen(navController)
+        }
+
         composable(Screen.Splash.route) {
             SplashScreen(
                 {
