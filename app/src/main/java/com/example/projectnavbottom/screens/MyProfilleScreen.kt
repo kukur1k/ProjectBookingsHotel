@@ -146,8 +146,7 @@ fun MyProfileScreen(navController: NavHostController) {
     Scaffold()
     { paddingValues ->
         Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)) {
+            .fillMaxSize()) {
 
                 Box(modifier = Modifier
                     .fillMaxWidth()){
@@ -167,7 +166,7 @@ fun MyProfileScreen(navController: NavHostController) {
 
                         Row(modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp, top = 30.dp),
+                            .padding(start = 20.dp, end = 20.dp, top = 50.dp),
                             horizontalArrangement = Arrangement.SpaceBetween) {
                             //кнопка для редактирования
                             IconButton(onClick =
@@ -206,7 +205,7 @@ fun MyProfileScreen(navController: NavHostController) {
                         }
                         Column(modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 80.dp),
+                            .padding(top = 100.dp),
                             horizontalAlignment = Alignment.CenterHorizontally) {
                             Image(
                                 painter = painterResource(id = R.drawable.profiletestphoto),
