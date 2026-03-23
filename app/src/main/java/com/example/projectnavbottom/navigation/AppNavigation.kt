@@ -1,6 +1,8 @@
 package com.example.projectnavbottom.navigation
 
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,7 +21,25 @@ import com.example.projectnavbottom.screens.TourInfoScreen
 @Composable
 fun AppNavigation(navController: NavHostController){
 
-    NavHost(navController = navController, startDestination = Screen.Splash.route){
+    NavHost(navController = navController,
+        startDestination = Screen.Splash.route,
+
+        //анимация перехода
+
+        exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left,
+                tween(400)
+            )
+        },
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                tween(400)
+            )
+        }
+
+    ){
         composable(Screen.Home.route) {
             HomeScreen()
         }
