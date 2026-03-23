@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +26,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -84,7 +86,8 @@ fun LoginScreen(
                     .background(Color.White),
                 placeholder = {
                     Text(text = "Введите логин")
-                }
+                },
+                shape = RoundedCornerShape(15.dp)
             )
             OutlinedTextField(
                 value = viewModel.password,
@@ -101,7 +104,8 @@ fun LoginScreen(
                 visualTransformation = PasswordVisualTransformation(),
                 placeholder = {
                     Text(text = "Введите пароль")
-                }
+                },
+                shape = RoundedCornerShape(15.dp)
             )
 
             StyledButton(
@@ -117,14 +121,17 @@ fun LoginScreen(
             }
             Text(
                 text = "Еще не зарегистрированны? Зарегистрируйтесь",
+                textDecoration = TextDecoration.Underline,
                 fontSize = 16.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(top = 60.dp)
                     .clickable  {
                         navController.navigate(Screen.Register.route)
                     }
+
             )
         }
     }

@@ -87,7 +87,7 @@ fun BookingsScreen(navController: NavController) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(top = paddingValues.calculateTopPadding()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
@@ -100,6 +100,11 @@ fun BookingsScreen(navController: NavController) {
                 "Family hotel Marrton",
                 "2 июн - 11 июн.",
                 "€ 201,50",
+                navController = navController) }
+            item { MyBookingCard(R.drawable.hotel3,
+                "Hotel Marriot Batumi",
+                "4 июн - 14 июн.",
+                "€ 1005,00",
                 navController = navController) }
             item { MyBookingCard(R.drawable.hotel3,
                 "Hotel Marriot Batumi",
