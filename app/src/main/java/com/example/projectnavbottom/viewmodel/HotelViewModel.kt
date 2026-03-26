@@ -37,14 +37,14 @@ class HotelViewModel(private val repository: HotelRepository): ViewModel(){
     fun insertHotel(title: String,
                     description: String,
                     stars: Int,
-                    country: Country,
+                    countryId: Int,
                     imgId: Int){
         viewModelScope.launch {
             val hotel = Hotel(
                 title = title,
                 description = description,
                 stars = stars,
-                country = country,
+                countryId = countryId,
                 imgId = imgId
             )
             repository.insert(hotel)
@@ -54,14 +54,14 @@ class HotelViewModel(private val repository: HotelRepository): ViewModel(){
     fun updateHotel(title: String,
                     description: String,
                     stars: Int,
-                    country: Country,
+                    countryId: Int,
                     imgId: Int){
         viewModelScope.launch {
             val hotel = Hotel(
                 title = title,
                 description = description,
                 stars = stars,
-                country = country,
+                countryId = countryId,
                 imgId = imgId
             )
             repository.update(hotel)

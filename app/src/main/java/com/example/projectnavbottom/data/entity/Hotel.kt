@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "hotel",
     foreignKeys = [ForeignKey(entity = Country::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("country"),
+        childColumns = arrayOf("countryId"),
         onDelete = ForeignKey.CASCADE)])
 data class Hotel(
     @PrimaryKey(autoGenerate = true)
@@ -17,6 +17,6 @@ data class Hotel(
     val title: String,
     val description: String,
     val stars: Int,
-    val country: Country,
+    val countryId: Int,
     val imgId: Int
 )

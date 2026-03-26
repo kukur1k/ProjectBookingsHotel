@@ -36,14 +36,14 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
     }
 
 
-    fun insertBooking(hotel: Hotel,
+    fun insertBooking(hotelId: Int,
                     totalPrice: Double,
                     startdate: String,
                     endDate: String,
                     imgId: Int){
         viewModelScope.launch {
             val booking = Booking(
-                hotel = hotel,
+                hotelId = hotelId,
                 totalPrice = totalPrice,
                 startDate = startdate,
                 endDate = endDate
@@ -52,14 +52,14 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
         }
     }
 
-    fun updateBooking(hotel: Hotel,
+    fun updateBooking(hotelId: Int,
                       totalPrice: Double,
                       startdate: String,
                       endDate: String,
                       imgId: Int){
         viewModelScope.launch {
             val booking = Booking(
-                hotel = hotel,
+                hotelId = hotelId,
                 totalPrice = totalPrice,
                 startDate = startdate,
                 endDate = endDate
