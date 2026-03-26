@@ -37,7 +37,7 @@ import com.example.projectnavbottom.R
 import com.example.projectnavbottom.navigation.Screen
 import com.example.projectnavbottom.screens.viewmodel.LoginScreenViewModel
 import com.example.projectnavbottom.ui.theme.StyledButton
-
+import org.intellij.lang.annotations.JdkConstants
 
 
 @Composable
@@ -130,7 +130,7 @@ fun LoginScreen(
                     .padding(top = 60.dp)
                     .clickable  {
                         navController.navigate(Screen.Register.route)
-                    }
+                    },
 
             )
         }

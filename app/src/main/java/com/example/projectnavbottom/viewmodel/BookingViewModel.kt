@@ -1,0 +1,78 @@
+package com.example.projectnavbottom.viewmodel
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.dbtesting.data.entity.Booking
+import com.example.dbtesting.data.entity.Country
+import com.example.dbtesting.data.entity.Hotel
+import com.example.projectnavbottom.data.repository.BookingRepository
+import com.example.projectnavbottom.data.repository.HotelRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+
+class BookingViewModel(private val repository: BookingRepository): ViewModel(){
+
+    val allBooking: StateFlow<List<Booking>> = repository.allBookings
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+    var selectedBooking by mutableStateOf<Booking?>(null)
+        private set
+
+    fun selectBooking(booking: Booking){
+        selectedBooking = booking
+    }
+
+    fun clearSelectedBooking(booking: Booking){
+        selectedBooking = null
+    }
+
+
+    fun insertBooking(hotel: Hotel,
+                    totalPrice: Double,
+                    startdate: String,
+                    endDate: String,
+                    imgId: Int){
+        viewModelScope.launch {
+            val booking = Booking(
+                hotel = hotel,
+                totalPrice = totalPrice,
+                startDate = startdate,
+                endDate = endDate
+            )
+            repository.insert(booking)
+        }
+    }
+
+    fun updateBooking(hotel: Hotel,
+                      totalPrice: Double,
+                      startdate: String,
+                      endDate: String,
+                      imgId: Int){
+        viewModelScope.launch {
+            val booking = Booking(
+                hotel = hotel,
+                totalPrice = totalPrice,
+                startDate = startdate,
+                endDate = endDate
+            )
+            repository.update(booking)
+        }
+    }
+
+    fun deleteHotel(booking: Booking){
+        viewModelScope.launch {
+            repository.delete(booking)
+        }
+    }
+
+
+}
