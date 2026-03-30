@@ -4,9 +4,12 @@ package com.example.projectnavbottom.navigation
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.projectnavbottom.data.repository.HotelRepository
 import com.example.projectnavbottom.screens.BookingsInfoScreen
 import com.example.projectnavbottom.screens.BookingsScreen
 import com.example.projectnavbottom.screens.CatalogScreen
@@ -16,10 +19,12 @@ import com.example.projectnavbottom.screens.MyProfileScreen
 import com.example.projectnavbottom.screens.RegisterScreen
 import com.example.projectnavbottom.screens.SplashScreen
 import com.example.projectnavbottom.screens.TourInfoScreen
+import com.example.projectnavbottom.viewmodel.BookingViewModel
+import com.example.projectnavbottom.viewmodel.HotelViewModel
 
 
 @Composable
-fun AppNavigation(navController: NavHostController){
+fun AppNavigation(navController: NavHostController, viewModelBooking: BookingViewModel, viewModelHotel: HotelViewModel){
 
     NavHost(navController = navController,
         startDestination = Screen.Splash.route,
@@ -50,7 +55,7 @@ fun AppNavigation(navController: NavHostController){
             RegisterScreen(navController)
         }
         composable(Screen.Catalog.route) {
-            CatalogScreen(navController)
+            CatalogScreen(navController, viewModelHotel)
         }
         composable(Screen.Bookings.route) {
             BookingsScreen(navController = navController)
@@ -60,9 +65,15 @@ fun AppNavigation(navController: NavHostController){
                 onBack = {navController.navigateUp()}
             )
         }
-        composable(Screen.TourInfo.route) {
+        composable(Screen.TourInfo.route,
+            arguments = listOf(navArgument("hotelId") {defaultValue = 1})
+        ) { backStackEntry ->
+            val hotelId = backStackEntry.arguments?.getString("hotelId")?.toIntOrNull() ?: 1
             TourInfoScreen(
-                onBack = {navController.navigateUp()}
+                onBack = {navController.navigateUp()},
+                bookingviewModel = viewModelBooking,
+                hotelViewModel = viewModelHotel,
+                hotelId = hotelId
             )
         }
 

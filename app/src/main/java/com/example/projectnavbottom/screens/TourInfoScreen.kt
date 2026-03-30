@@ -17,9 +17,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,33 +38,62 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dbtesting.data.entity.Hotel
 import com.example.projectnavbottom.R
+import com.example.projectnavbottom.data.repository.HotelRepository
+import com.example.projectnavbottom.ui.components.BookingInputDialog
+import com.example.projectnavbottom.ui.theme.StyledButton
+import com.example.projectnavbottom.viewmodel.BookingViewModel
+import com.example.projectnavbottom.viewmodel.HotelViewModel
 
 @Composable
-fun TourInfoScreen(onBack: () -> Boolean) {
-    Scaffold()
-    { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-            CardInfoScreen(R.drawable.hotel1,
-                "Grand Mediterranea Resort & Spa",
-                "1 окт - 11 окт.",
-                "€ 148,50")
+fun TourInfoScreen(onBack: () -> Boolean,
+                   bookingviewModel: BookingViewModel,
+                   hotelViewModel: HotelViewModel,
+                   hotelId: Int)
+{
+
+    val allHotels by hotelViewModel.allHotels.collectAsState()
+    val hotel = allHotels.find {it.id == hotelId}
+
+    if (hotel != null){
+
+        Scaffold()
+        { paddingValues ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item {
+                    CardInfoScreen(hotel = hotel, viewModel = bookingviewModel)
+                }
             }
+        }
+
+    }else{
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("Отель не найден")
+        }
     }
-}
+
+
 }
 
 @Composable
-fun CardInfoScreen(idImg: Int, title: String, date: String, cost: String) {
+fun CardInfoScreen(hotel: Hotel,
+                   viewModel: BookingViewModel) {
+
+    var showDialog by remember { mutableStateOf(false) }
+
     Column() {
         Image(
-            painter = painterResource(id = idImg),
+            painter = painterResource(id = hotel.imgId),
             contentDescription = "TravelImg",
             modifier = Modifier
                 .padding(2.dp)
@@ -81,13 +112,13 @@ fun CardInfoScreen(idImg: Int, title: String, date: String, cost: String) {
 
         ) {
             Text(
-                text = "★★★★★",
+                text = "★".repeat(hotel.stars),
                 color = Color(0xFFFF8C00),
                 fontSize = 20.sp
             )
             Row() {
                 Text(
-                    text = title,
+                    text = hotel.title,
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp,
                     color = Color.Black,
@@ -134,7 +165,7 @@ fun CardInfoScreen(idImg: Int, title: String, date: String, cost: String) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        text = date + " 2026",
+                        text = "17.07" + " 2026",
                         fontWeight = FontWeight.Bold,
                         fontSize = 22.sp,
                         color = Color.Black
@@ -160,6 +191,36 @@ fun CardInfoScreen(idImg: Int, title: String, date: String, cost: String) {
         }
 
         Spacer(modifier = Modifier.height(20.dp))
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()) {
+            StyledButton(
+                backColor = Color(0xFF1F19D9),
+                onClick = { showDialog = true }
+            ) {
+                Text(
+                    text = "Забронировать",
+                    fontSize = 16.sp
+                )
+            }
+        }
+
+        val hotelId = hotel.id
+
+        if (showDialog) {
+            BookingInputDialog(
+                title = "Создание брони",
+                onDismiss = { showDialog = false },
+                onConfirm = {hotelId, prc, startDate, endDate, countGuestAdult, countGuestChild ->
+                    viewModel.insertBooking( hotelId, prc, startDate, endDate, countGuestAdult, countGuestChild)
+                }
+            )
+        }
+
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+
         ReviewsSwiper()
 
 
@@ -255,7 +316,7 @@ fun Review(name: String, description: String){
             Box(modifier = Modifier.padding(10.dp)){
                 Column(modifier = Modifier
                     .padding(5.dp)
-                    .clickable{
+                    .clickable {
                         isExpanded = !isExpanded
                     }) {
                     Text(
@@ -274,8 +335,8 @@ fun Review(name: String, description: String){
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun TourInfoScreenPreview() {
-    TourInfoScreen({true})
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun TourInfoScreenPreview() {
+//    TourInfoScreen({true})
+//}

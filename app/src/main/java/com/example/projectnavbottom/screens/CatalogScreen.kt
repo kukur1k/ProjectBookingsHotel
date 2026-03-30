@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -42,6 +43,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,16 +61,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.dbtesting.data.entity.Hotel
 import com.example.projectnavbottom.R
+import com.example.projectnavbottom.data.dao.CountryDao
 import com.example.projectnavbottom.navigation.Screen
 import com.example.projectnavbottom.ui.theme.ButtonTourInfo
+import com.example.projectnavbottom.viewmodel.HotelViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CatalogScreen(navController: NavHostController) {
+fun CatalogScreen(navController: NavHostController, hotelViewModel: HotelViewModel) {
+
+    val allHotels by hotelViewModel.allHotels.collectAsState()
+
+
     Scaffold(topBar = {
         TopAppBarMenu()
     })
@@ -80,37 +90,19 @@ fun CatalogScreen(navController: NavHostController) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
-            item { TourCard(R.drawable.hotel1,
-                "Grand Mediterranea Resort & Spa",
-                "Турция, Анталия",
-                navController = navController) }
-            item { TourCard(R.drawable.hotel2,
-                "Family Hotel Marrton",
-                "Турция, Анталия",
-                navController = navController) }
-            item { TourCard(R.drawable.hotel3,
-                "Hotel Marriot Batumi",
-                "Батум, Грузия",
-                navController = navController) }
-            item { TourCard(R.drawable.hotel1,
-                "Grand Mediterranea Resort & Spa",
-                "Турция, Анталия",
-                navController = navController)}
-            item { TourCard(R.drawable.hotel2,
-                "Family Hotel Marrton",
-                "Турция, Анталия",
-                navController = navController) }
-            item { TourCard(R.drawable.hotel3,
-                "Hotel Marriot Batumi",
-                "Батум, Грузия",
-                navController = navController) }
+            items(allHotels) {hotel ->
+                TourCard(
+                    hotel = hotel,
+                    navController = navController
+                )
+            }
 
         }
     }
 }
 
 @Composable
-fun TourCard(idImg: Int, title: String, country: String, navController: NavHostController){
+fun TourCard(hotel: Hotel, navController: NavHostController){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,7 +117,7 @@ fun TourCard(idImg: Int, title: String, country: String, navController: NavHostC
                 .clip(RoundedCornerShape(8.dp))
             ){
                     Image(
-                        painter = painterResource(id = idImg),
+                        painter = painterResource(id = hotel.imgId),
                         contentDescription = "TravelImg",
                         modifier = Modifier
                             .fillMaxWidth()
@@ -138,33 +130,38 @@ fun TourCard(idImg: Int, title: String, country: String, navController: NavHostC
                 .padding(10.dp)
             ) {
                 Text(
-                    text = title,
+                    text = hotel.title,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = Color.Black
                 )
+
+
+                // Настроить выбор страны
                 Text(
-                    text = country,
+                    text = "Страна",
                     fontSize = 14.sp,
                     color = Color.Black
                 )
                 Row(verticalAlignment = Alignment.CenterVertically){
                     Text(
-                        text = "★★★★★",
+                        text = "★".repeat(hotel.stars),
                         color = Color(0xFFFFD700),
                         fontSize = 14.sp
                     )
                     Text(
-                        text = " (5 звезд)",
+                        text = " (${hotel.stars} звезд)",
                         fontSize = 12.sp,
                         modifier = Modifier.padding(start = 4.dp),
                         color = Color.Black,
                         softWrap = false
                     )
                 }
+
+
                 ButtonTourInfo(
                     onClick = {
-                        navController.navigate(Screen.TourInfo.route)
+                        navController.navigate(Screen.TourInfo.passId(hotel.id))
                     }
                 ){
                     Text(
@@ -224,8 +221,8 @@ fun TopAppBarMenu() {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun CatalogScreenPreview() {
-    CatalogScreen(navController = rememberNavController())
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CatalogScreenPreview() {
+//    CatalogScreen(navController = rememberNavController())
+//}

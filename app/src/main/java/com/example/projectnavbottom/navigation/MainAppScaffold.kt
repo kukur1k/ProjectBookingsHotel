@@ -15,11 +15,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.projectnavbottom.data.repository.BookingRepository
+import com.example.projectnavbottom.data.repository.HotelRepository
+import com.example.projectnavbottom.viewmodel.BookingViewModel
+import com.example.projectnavbottom.viewmodel.HotelViewModel
 
 @Composable
-fun MainAppScaffold(navController: NavHostController) {
+fun MainAppScaffold(navController: NavHostController, repositorybooking: BookingRepository, repositoryhotel: HotelRepository) {
+
+    val viewModelBooking: BookingViewModel = viewModel(
+        factory = BookingViewModelFactory(repositorybooking )
+    )
+
+    val viewModelHotel: HotelViewModel = viewModel(
+        factory = HotelViewModelFactory(repositoryhotel)
+    )
+
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     val currentRoute = navBackStackEntry?.destination?.route
@@ -103,7 +120,43 @@ fun MainAppScaffold(navController: NavHostController) {
                 .background(Color.White)
                 .padding(paddingValues)
         ) {
-            AppNavigation(navController)
+            AppNavigation(navController, viewModelBooking, viewModelHotel)
         }
     }
 }
+
+
+// интерфейс фабрики
+
+class BookingViewModelFactory(
+    private val repository: BookingRepository
+) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+        if (modelClass.isAssignableFrom(BookingViewModel::class.java)) {
+
+            return BookingViewModel(repository) as T
+        }
+
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+
+
+class HotelViewModelFactory(
+    private val repository: HotelRepository
+) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+        if (modelClass.isAssignableFrom(HotelViewModel::class.java)) {
+
+            return HotelViewModel(repository) as T
+        }
+
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+

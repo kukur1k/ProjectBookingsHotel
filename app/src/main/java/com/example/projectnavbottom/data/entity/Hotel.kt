@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE)])
 data class Hotel(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    var id: Int = 0,
     val title: String,
     val description: String,
     val stars: Int,

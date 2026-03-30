@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,6 +64,11 @@ fun HomeScreen() {
                 .fillMaxSize()
                 .padding(horizontal = 10.dp, vertical = 20.dp)
         ) {
+            LaunchedEffect(Unit) {
+                println("hotel1 ID: ${R.drawable.hotel1}")
+                println("hotel2 ID: ${R.drawable.hotel2}")
+                println("hotel3 ID: ${R.drawable.hotel3}")
+            }
             Column(modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(

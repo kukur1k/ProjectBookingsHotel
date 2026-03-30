@@ -40,13 +40,17 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
                     totalPrice: Double,
                     startdate: String,
                     endDate: String,
-                    imgId: Int){
+                      countGuestAdult: Int,
+                      countGuestChild: Int){
         viewModelScope.launch {
             val booking = Booking(
                 hotelId = hotelId,
                 totalPrice = totalPrice,
                 startDate = startdate,
-                endDate = endDate
+                endDate = endDate,
+                countGuestAdult = countGuestAdult,
+                countGuestChild = countGuestChild
+
             )
             repository.insert(booking)
         }
@@ -56,13 +60,16 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
                       totalPrice: Double,
                       startdate: String,
                       endDate: String,
-                      imgId: Int){
+                      countGuestAdult: Int,
+                      countGuestChild: Int){
         viewModelScope.launch {
             val booking = Booking(
                 hotelId = hotelId,
                 totalPrice = totalPrice,
                 startDate = startdate,
-                endDate = endDate
+                endDate = endDate,
+                countGuestAdult = countGuestAdult,
+                countGuestChild = countGuestChild
             )
             repository.update(booking)
         }

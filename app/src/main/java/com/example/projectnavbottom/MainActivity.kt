@@ -35,22 +35,74 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.example.dbtesting.data.database.AppDatabase
+import com.example.dbtesting.data.entity.Hotel
+import com.example.projectnavbottom.data.repository.BookingRepository
+import com.example.projectnavbottom.data.repository.HotelRepository
 import com.example.projectnavbottom.navigation.MainAppScaffold
 import com.example.projectnavbottom.screens.CatalogScreen
 import com.example.projectnavbottom.screens.TourInfoScreen
 import com.example.projectnavbottom.ui.theme.ProjectNavBottomTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val database = AppDatabase.getDatabase(this@MainActivity)
+            val hotelDao = database.HotelDao()
+
+            // Добавляем отели
+            val hotels = listOf(
+                Hotel(
+                    id = 1,
+                    title = "Grand Mediterranea Resort & Spa",
+                    description = "Роскошный пятизвездочный курорт",
+                    stars = 5,
+                    countryId = 1,
+                    imgId = R.drawable.hotel1
+                ),
+                Hotel(
+                    id = 2,
+                    title = "Family Hotel Marrton",
+                    description = "Уютный семейный отель",
+                    stars = 4,
+                    countryId = 1,
+                    imgId = R.drawable.hotel2
+                ),
+                Hotel(
+                    id = 3,
+                    title = "Hotel Marriot Batumi",
+                    description = "Премиальный отель",
+                    stars = 5,
+                    countryId = 2,
+                    imgId = R.drawable.hotel3
+                )
+            )
+
+            hotels.forEach { hotel ->
+                try {
+                    hotelDao.insert(hotel)
+                } catch (e: Exception) {
+                    hotelDao.update(hotel)
+                }
+            }
+        }
+
+
+        val database = AppDatabase.getDatabase(this)
+        val repositorybooking = BookingRepository(database.BookingDao())
+        val repositoryhotel = HotelRepository(database.HotelDao())
 
         setContent {
             ProjectNavBottomTheme {
                 val navController = rememberNavController()
-                MainAppScaffold(navController)
+                MainAppScaffold(navController, repositorybooking, repositoryhotel)
             }
                 }
             }

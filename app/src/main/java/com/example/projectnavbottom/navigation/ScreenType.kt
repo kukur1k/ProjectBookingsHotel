@@ -17,7 +17,12 @@ sealed class Screen(val route: String, val ScreenType: ScreenType){
 
     object Splash: Screen("splash", ScreenType.WithoutBottomNav)
     object BookingsInfo: Screen(route = "bookings_info", ScreenType.WithoutBottomNav)
-    object TourInfo: Screen(route = "tour_info", ScreenType.WithoutBottomNav)
+    object TourInfo: Screen(route = "tour_info/{hotelId}", ScreenType.WithoutBottomNav){
+        fun passId(hotelId: Int): String {
+            return "tourInfo/$hotelId"
+        }
+    }
+
     object Register: Screen(route = "register", ScreenType.WithoutBottomNav)
 
     object Login: Screen(route = "login", ScreenType.WithoutBottomNav)

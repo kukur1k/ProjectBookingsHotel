@@ -15,5 +15,7 @@ data class Booking(
     val hotelId: Int,
     val totalPrice: Double,
     val startDate: String,
-    val endDate: String
+    val endDate: String,
+    val countGuestAdult: Int,
+    val countGuestChild: Int
 )
