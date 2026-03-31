@@ -19,7 +19,7 @@ sealed class Screen(val route: String, val ScreenType: ScreenType){
     object BookingsInfo: Screen(route = "bookings_info", ScreenType.WithoutBottomNav)
     object TourInfo: Screen(route = "tour_info/{hotelId}", ScreenType.WithoutBottomNav){
         fun passId(hotelId: Int): String {
-            return "tourInfo/$hotelId"
+            return "tour_info/$hotelId"
         }
     }
 

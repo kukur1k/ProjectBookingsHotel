@@ -4,12 +4,11 @@ package com.example.projectnavbottom.navigation
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.projectnavbottom.data.repository.HotelRepository
 import com.example.projectnavbottom.screens.BookingsInfoScreen
 import com.example.projectnavbottom.screens.BookingsScreen
 import com.example.projectnavbottom.screens.CatalogScreen
@@ -66,9 +65,9 @@ fun AppNavigation(navController: NavHostController, viewModelBooking: BookingVie
             )
         }
         composable(Screen.TourInfo.route,
-            arguments = listOf(navArgument("hotelId") {defaultValue = 1})
+            arguments = listOf(navArgument("hotelId") {type = NavType.IntType})
         ) { backStackEntry ->
-            val hotelId = backStackEntry.arguments?.getString("hotelId")?.toIntOrNull() ?: 1
+            val hotelId = backStackEntry.arguments?.getInt("hotelId") ?: 1
             TourInfoScreen(
                 onBack = {navController.navigateUp()},
                 bookingviewModel = viewModelBooking,

@@ -10,6 +10,7 @@ import com.example.dbtesting.data.dao.HotelDao
 import com.example.dbtesting.data.entity.Booking
 import com.example.dbtesting.data.entity.Country
 import com.example.dbtesting.data.entity.Hotel
+import com.example.projectnavbottom.data.dao.CountryDao
 
 
 @Database(
@@ -20,6 +21,8 @@ import com.example.dbtesting.data.entity.Hotel
 abstract class AppDatabase: RoomDatabase() {
     abstract fun HotelDao(): HotelDao
     abstract fun BookingDao(): BookingDao
+
+    abstract fun CountryDao(): CountryDao
 
     companion object {
         @Volatile

@@ -1,49 +1,18 @@
 package com.example.projectnavbottom
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.example.dbtesting.data.database.AppDatabase
+import com.example.dbtesting.data.entity.Country
 import com.example.dbtesting.data.entity.Hotel
+import com.example.projectnavbottom.data.dao.CountryDao
 import com.example.projectnavbottom.data.repository.BookingRepository
 import com.example.projectnavbottom.data.repository.HotelRepository
 import com.example.projectnavbottom.navigation.MainAppScaffold
-import com.example.projectnavbottom.screens.CatalogScreen
-import com.example.projectnavbottom.screens.TourInfoScreen
 import com.example.projectnavbottom.ui.theme.ProjectNavBottomTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,8 +25,13 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             val database = AppDatabase.getDatabase(this@MainActivity)
             val hotelDao = database.HotelDao()
+            val countryDao = database.CountryDao()
 
-            // Добавляем отели
+            val countrys = listOf(
+                Country(id = 1, "Турция"),
+                Country(id = 2, "Грузия"),
+            )
+
             val hotels = listOf(
                 Hotel(
                     id = 1,
@@ -85,11 +59,24 @@ class MainActivity : ComponentActivity() {
                 )
             )
 
+
+            countrys.forEach { country ->
+                try {
+                    countryDao.insert(country)
+                } catch (e: Exception) {
+                    countryDao.update(country)
+                    Log.e("ERROR DB", "ERROR")
+                    e.message
+                }
+            }
+
             hotels.forEach { hotel ->
                 try {
                     hotelDao.insert(hotel)
                 } catch (e: Exception) {
                     hotelDao.update(hotel)
+                    Log.e("ERROR DB", "ERROR")
+                    e.message
                 }
             }
         }

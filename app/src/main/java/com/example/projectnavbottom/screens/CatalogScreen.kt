@@ -75,6 +75,7 @@ import com.example.projectnavbottom.viewmodel.HotelViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatalogScreen(navController: NavHostController, hotelViewModel: HotelViewModel) {
+    
 
     val allHotels by hotelViewModel.allHotels.collectAsState()
 
