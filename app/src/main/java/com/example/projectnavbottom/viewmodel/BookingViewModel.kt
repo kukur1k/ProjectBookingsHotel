@@ -75,7 +75,7 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
         }
     }
 
-    fun deleteHotel(booking: Booking){
+    fun deleteBooking(booking: Booking){
         viewModelScope.launch {
             repository.delete(booking)
         }

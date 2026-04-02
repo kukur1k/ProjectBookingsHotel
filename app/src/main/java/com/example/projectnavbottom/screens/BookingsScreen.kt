@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -38,6 +39,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,16 +60,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.dbtesting.data.entity.Booking
+import com.example.dbtesting.data.entity.Hotel
 import com.example.projectnavbottom.R
 import com.example.projectnavbottom.navigation.Screen
 import com.example.projectnavbottom.ui.theme.ReBookingButton
 import com.example.projectnavbottom.ui.theme.StyledButton
+import com.example.projectnavbottom.viewmodel.BookingViewModel
+import com.example.projectnavbottom.viewmodel.HotelViewModel
 import java.sql.Date
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookingsScreen(navController: NavController) {
+fun BookingsScreen(navController: NavController, bookingViewModel: BookingViewModel, hotelViewModel: HotelViewModel) {
+
+    val allBookings by bookingViewModel.allBooking.collectAsState()
+    val allHotels by hotelViewModel.allHotels.collectAsState()
+
     Scaffold(topBar = {
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
@@ -84,41 +94,51 @@ fun BookingsScreen(navController: NavController) {
         )
     })
     { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = paddingValues.calculateTopPadding()),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(16.dp)
-        ) {
-            item { MyBookingCard(R.drawable.hotel1,
-                "Grand Mediterranea Resort & Spa",
-                "1 окт - 11 окт.",
-                "€ 148,50",
-                navController = navController) }
-            item { MyBookingCard(R.drawable.hotel2,
-                "Family hotel Marrton",
-                "2 июн - 11 июн.",
-                "€ 201,50",
-                navController = navController) }
-            item { MyBookingCard(R.drawable.hotel3,
-                "Hotel Marriot Batumi",
-                "4 июн - 14 июн.",
-                "€ 1005,00",
-                navController = navController) }
-            item { MyBookingCard(R.drawable.hotel3,
-                "Hotel Marriot Batumi",
-                "4 июн - 14 июн.",
-                "€ 1005,00",
-                navController = navController) }
+
+        if (allBookings.isEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Список пуст")
+            }
+        }else{
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = paddingValues.calculateTopPadding()),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                items(allBookings) {booking ->
+                    val hotel = allHotels.find { it.id == booking.hotelId }
+                    if (hotel != null){
+                        MyBookingCard(
+                            booking = booking,
+                            hotel = hotel,
+                            navController = navController,
+                            bookingViewModel = bookingViewModel
+                        )
+                    }
+
+                }
+
+
+
+            }
         }
+
+
     }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyBookingCard(idImg: Int, title: String, date: String, cost: String, navController: NavController){
+fun MyBookingCard(booking: Booking,
+                  hotel: Hotel,
+                  navController: NavController,
+                  bookingViewModel: BookingViewModel){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -134,7 +154,7 @@ fun MyBookingCard(idImg: Int, title: String, date: String, cost: String, navCont
                     .clip(RoundedCornerShape(8.dp))
                 ){
                     Image(
-                        painter = painterResource(id = idImg),
+                        painter = painterResource(id = hotel.imgId),
                         contentDescription = "TravelImg",
                         modifier = Modifier
                             .width(110.dp)
@@ -147,22 +167,16 @@ fun MyBookingCard(idImg: Int, title: String, date: String, cost: String, navCont
                     .padding(10.dp)
                 ) {
                     Text(
-                        text = title,
+                        text = hotel.title,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         color = Color.Black
                     )
                     Row(modifier = Modifier.padding(top = 10.dp)) {
                         Text(
-                            text = date,
-                            fontSize = 15.sp,
-                            color = Color.Black
-                        )
-                        Text(
-                            text = cost,
+                            text = "${booking.startDate} - ${booking.endDate}",
                             fontSize = 16.sp,
-                            color = Color.Black,
-                            modifier = Modifier.padding(start = 3.dp)
+                            color = Color.Black
                         )
 
                     }
@@ -285,10 +299,18 @@ fun MyBookingCard(idImg: Int, title: String, date: String, cost: String, navCont
 
 
 //                            Переход к отелю
-                            StyledButton(onClick = {navController.navigate(Screen.TourInfo.route) },
+                            StyledButton(onClick = {navController.navigate(Screen.TourInfo.passId(hotel.id)) },
                                 backColor = Color(0xFF1F19D9)) {
                                 Text(
                                     text = "Перейти к отелю",
+                                    color = Color.White
+                                )
+                            }
+
+                            StyledButton(onClick = {},
+                                backColor = Color(0xFF1F19D9)) {
+                                Text(
+                                    text = "Забронировать",
                                     color = Color.White
                                 )
                             }
@@ -297,30 +319,43 @@ fun MyBookingCard(idImg: Int, title: String, date: String, cost: String, navCont
                     }
                 }
 
-                ReBookingButton(
-                    onClick = {
-                        isSheetOpen = true
-                    }
-                ){
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    ReBookingButton(
+                        onClick = {
+                            isSheetOpen = true
+                        }
+                    ){
 
-                    Row(modifier = Modifier.padding(top = 10.dp),
-                        verticalAlignment = Alignment.CenterVertically) {
-                        Image(
-                            painter = painterResource(R.drawable.refresh),
-                            contentDescription = "TravelImg",
-                            modifier = Modifier
-                                .width(50.dp)
-                                .background(color = Color.White)
-                                .padding(2.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                        )
+                        Row(modifier = Modifier.padding(top = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(R.drawable.refresh),
+                                contentDescription = "TravelImg",
+                                modifier = Modifier
+                                    .width(50.dp)
+                                    .background(color = Color.White)
+                                    .padding(2.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                            )
+                            Text(
+                                text = "Забронировать жилье снова",
+                                fontSize = 15.sp,
+                                color = Color.Black
+                            )
+                        }
+
+                    }
+
+                    StyledButton(
+                        backColor = Color(0xFFF44336),
+                        onClick = { bookingViewModel.deleteBooking(booking) }
+
+                    ) {
                         Text(
-                            text = "Забронировать жилье снова",
-                            fontSize = 15.sp,
-                            color = Color.Black
+                            text = "Удалить данные о брони",
+                            fontSize = 16.sp
                         )
                     }
-
                 }
 
             }
@@ -360,9 +395,9 @@ fun MyBookingCard(idImg: Int, title: String, date: String, cost: String, navCont
 //}
 
 
-@Preview(showBackground = true)
-@Composable
-fun BookingsPreview() {
-    val navController = rememberNavController()
-    BookingsScreen(navController = navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun BookingsPreview() {
+//    val navController = rememberNavController()
+//    BookingsScreen(navController = navController)
+//}

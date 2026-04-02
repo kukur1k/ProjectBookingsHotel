@@ -201,14 +201,13 @@ fun CardInfoScreen(hotel: Hotel,
             }
         }
 
-        val hotelId = hotel.id
 
         if (showDialog) {
             BookingInputDialog(
                 title = "Создание брони",
                 onDismiss = { showDialog = false },
                 onConfirm = {hotelId, prc, startDate, endDate, countGuestAdult, countGuestChild ->
-                    viewModel.insertBooking( hotelId, prc, startDate, endDate, countGuestAdult, countGuestChild)
+                    viewModel.insertBooking( hotel.id, prc, startDate, endDate, countGuestAdult, countGuestChild)
                 }
             )
         }

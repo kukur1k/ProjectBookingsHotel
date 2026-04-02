@@ -57,7 +57,9 @@ fun AppNavigation(navController: NavHostController, viewModelBooking: BookingVie
             CatalogScreen(navController, viewModelHotel)
         }
         composable(Screen.Bookings.route) {
-            BookingsScreen(navController = navController)
+            BookingsScreen(navController = navController,
+                bookingViewModel = viewModelBooking,
+                hotelViewModel = viewModelHotel)
         }
         composable(Screen.BookingsInfo.route) {
             BookingsInfoScreen(
