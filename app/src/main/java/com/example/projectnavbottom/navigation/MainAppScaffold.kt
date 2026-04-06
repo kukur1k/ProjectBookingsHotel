@@ -20,13 +20,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.projectnavbottom.data.dao.CountryDao
 import com.example.projectnavbottom.data.repository.BookingRepository
+import com.example.projectnavbottom.data.repository.CountryRepository
 import com.example.projectnavbottom.data.repository.HotelRepository
 import com.example.projectnavbottom.viewmodel.BookingViewModel
+import com.example.projectnavbottom.viewmodel.CountryViewModel
 import com.example.projectnavbottom.viewmodel.HotelViewModel
 
 @Composable
-fun MainAppScaffold(navController: NavHostController, repositorybooking: BookingRepository, repositoryhotel: HotelRepository) {
+fun MainAppScaffold(navController: NavHostController,
+                    repositorybooking: BookingRepository,
+                    repositoryhotel: HotelRepository,
+                    repositorycountry: CountryRepository) {
 
     val viewModelBooking: BookingViewModel = viewModel(
         factory = BookingViewModelFactory(repositorybooking )
@@ -34,6 +40,10 @@ fun MainAppScaffold(navController: NavHostController, repositorybooking: Booking
 
     val viewModelHotel: HotelViewModel = viewModel(
         factory = HotelViewModelFactory(repositoryhotel)
+    )
+
+    val viewModelCountry: CountryViewModel = viewModel(
+        factory = CountryViewModelFactory(repositorycountry)
     )
 
 
@@ -120,7 +130,7 @@ fun MainAppScaffold(navController: NavHostController, repositorybooking: Booking
                 .background(Color.White)
                 .padding(paddingValues)
         ) {
-            AppNavigation(navController, viewModelBooking, viewModelHotel)
+            AppNavigation(navController, viewModelBooking, viewModelHotel, viewModelCountry)
         }
     }
 }
@@ -154,6 +164,21 @@ class HotelViewModelFactory(
         if (modelClass.isAssignableFrom(HotelViewModel::class.java)) {
 
             return HotelViewModel(repository) as T
+        }
+
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class CountryViewModelFactory(
+    private val repository: CountryRepository
+) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+        if (modelClass.isAssignableFrom(CountryViewModel::class.java)) {
+
+            return CountryViewModel(repository) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")

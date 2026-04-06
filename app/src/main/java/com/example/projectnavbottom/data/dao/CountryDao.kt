@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.dbtesting.data.entity.Country
-import com.example.dbtesting.data.entity.Hotel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,5 +24,6 @@ interface CountryDao {
     fun getAllCountries(): Flow<List<Country>>
 
     @Query("SELECT * FROM country WHERE id = :id")
-    suspend fun getCountryById(id: String): Country?
+    suspend fun getCountryById(id: Int): Country?
+
 }

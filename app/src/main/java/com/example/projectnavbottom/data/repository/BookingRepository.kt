@@ -26,7 +26,7 @@ class BookingRepository(private val bookingDao: BookingDao) {
         bookingDao.delete(booking)
     }
 
-    suspend fun getItemById(id: Int): Booking? {
+    suspend fun getBookingById(id: Int): Booking? {
         return bookingDao.getBookingById(id)
     }
 }

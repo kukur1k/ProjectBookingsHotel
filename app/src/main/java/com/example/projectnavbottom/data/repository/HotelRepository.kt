@@ -24,7 +24,8 @@ class HotelRepository(private val hotelDao: HotelDao) {
         hotelDao.delete(hotel)
     }
 
-    suspend fun getItemById(id: Int): Hotel? {
+    suspend fun getHotelById(id: Int): Hotel? {
         return hotelDao.getHotelById(id)
     }
+
 }

@@ -24,4 +24,7 @@ interface HotelDao{
 
     @Query("SELECT * FROM hotel WHERE id = :id")
     suspend fun getHotelById(id: Int): Hotel?
+
+
+
 }

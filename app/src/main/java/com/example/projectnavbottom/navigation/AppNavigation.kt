@@ -9,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.projectnavbottom.data.dao.CountryDao
 import com.example.projectnavbottom.screens.BookingsInfoScreen
 import com.example.projectnavbottom.screens.BookingsScreen
 import com.example.projectnavbottom.screens.CatalogScreen
@@ -19,11 +20,16 @@ import com.example.projectnavbottom.screens.RegisterScreen
 import com.example.projectnavbottom.screens.SplashScreen
 import com.example.projectnavbottom.screens.TourInfoScreen
 import com.example.projectnavbottom.viewmodel.BookingViewModel
+import com.example.projectnavbottom.viewmodel.CountryViewModel
 import com.example.projectnavbottom.viewmodel.HotelViewModel
 
 
 @Composable
-fun AppNavigation(navController: NavHostController, viewModelBooking: BookingViewModel, viewModelHotel: HotelViewModel){
+fun AppNavigation(navController: NavHostController,
+                  viewModelBooking: BookingViewModel,
+                  viewModelHotel: HotelViewModel,
+                  viewModelCountry: CountryViewModel
+){
 
     NavHost(navController = navController,
         startDestination = Screen.Splash.route,
@@ -54,7 +60,9 @@ fun AppNavigation(navController: NavHostController, viewModelBooking: BookingVie
             RegisterScreen(navController)
         }
         composable(Screen.Catalog.route) {
-            CatalogScreen(navController, viewModelHotel)
+            CatalogScreen(navController,
+                viewModelHotel,
+                viewModelCountry)
         }
         composable(Screen.Bookings.route) {
             BookingsScreen(navController = navController,
