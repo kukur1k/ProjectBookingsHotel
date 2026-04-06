@@ -23,7 +23,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -64,6 +66,7 @@ import com.example.dbtesting.data.entity.Booking
 import com.example.dbtesting.data.entity.Hotel
 import com.example.projectnavbottom.R
 import com.example.projectnavbottom.navigation.Screen
+import com.example.projectnavbottom.ui.components.BookingInputDialog
 import com.example.projectnavbottom.ui.theme.ReBookingButton
 import com.example.projectnavbottom.ui.theme.StyledButton
 import com.example.projectnavbottom.viewmodel.BookingViewModel
@@ -77,6 +80,8 @@ fun BookingsScreen(navController: NavController, bookingViewModel: BookingViewMo
 
     val allBookings by bookingViewModel.allBooking.collectAsState()
     val allHotels by hotelViewModel.allHotels.collectAsState()
+
+
 
     Scaffold(topBar = {
         TopAppBar(
@@ -139,6 +144,8 @@ fun MyBookingCard(booking: Booking,
                   hotel: Hotel,
                   navController: NavController,
                   bookingViewModel: BookingViewModel){
+
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -147,6 +154,9 @@ fun MyBookingCard(booking: Booking,
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+
+        val selectedItem = bookingViewModel.selectedBooking
+
         Column {
             Row() {
                 Box( modifier = Modifier
@@ -197,6 +207,8 @@ fun MyBookingCard(booking: Booking,
             Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start) {
 
+
+                var showDialog by remember {mutableStateOf(false)}
 
                 val sheetState = rememberModalBottomSheetState()
                 var isSheetOpen by rememberSaveable{
@@ -346,23 +358,67 @@ fun MyBookingCard(booking: Booking,
 
                     }
 
-                    StyledButton(
-                        backColor = Color(0xFFF44336),
-                        onClick = { bookingViewModel.deleteBooking(booking) }
-
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text(
-                            text = "Удалить данные о брони",
-                            fontSize = 16.sp
+
+                        IconButton(
+                            modifier = Modifier.weight(1f),
+                            onClick = {
+                                bookingViewModel.selectBooking(booking)
+                                showDialog = true
+                            }) {
+                            Icon(
+                                imageVector = Icons.Default.Create,
+                                contentDescription = "ChangData"
+                            )
+                        }
+
+
+                        IconButton(
+                            modifier = Modifier.weight(1f),
+                            onClick = { bookingViewModel.deleteBooking(booking) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "ChangData"
+                            )
+                        }
+                    }
+
+
+                    if (showDialog && selectedItem != null) {
+                        BookingInputDialog(
+                            title = "Редактирование брони",
+                            initHotelId = selectedItem.hotelId,
+                            initTotalPrice = selectedItem.totalPrice,
+                            initStartDate= selectedItem.startDate,
+                            initEndDate= selectedItem.endDate,
+                            initCountGuestAdult= selectedItem.countGuestAdult,
+                            initCountGuestChild= selectedItem.countGuestChild,
+                            onDismiss = {
+                                showDialog = false
+                                bookingViewModel.clearSelectedBooking(booking)
+                            },
+                            onConfirm = { hotelId, prc, startDate, endDate, countGuestAdult, countGuestChild ->
+                                bookingViewModel.updateBooking(
+                                    booking.id, hotel.id, prc, startDate, endDate, countGuestAdult, countGuestChild
+                                )
+                            }
                         )
                     }
+
+
                 }
 
             }
 
         }
 
+
     }
+
 }
 
 

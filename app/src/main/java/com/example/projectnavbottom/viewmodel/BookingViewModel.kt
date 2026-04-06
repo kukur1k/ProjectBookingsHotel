@@ -56,7 +56,8 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
         }
     }
 
-    fun updateBooking(hotelId: Int,
+    fun updateBooking(id: Int,
+                      hotelId: Int,
                       totalPrice: Double,
                       startdate: String,
                       endDate: String,
@@ -64,6 +65,7 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
                       countGuestChild: Int){
         viewModelScope.launch {
             val booking = Booking(
+                id = id,
                 hotelId = hotelId,
                 totalPrice = totalPrice,
                 startDate = startdate,

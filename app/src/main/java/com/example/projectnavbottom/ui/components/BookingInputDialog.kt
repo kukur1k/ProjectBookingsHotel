@@ -2,6 +2,7 @@ package com.example.projectnavbottom.ui.components
 
 
 import android.app.AlertDialog
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,24 +42,37 @@ fun BookingInputDialog(
      onConfirm: (Int, Double, String, String, Int, Int) -> Unit
 ) {
     var hotelId by remember { mutableStateOf(initHotelId) }
-    var totalPrice by remember { mutableStateOf("") }
+    var totalPrice by remember { mutableStateOf(if (initTotalPrice != 0.0) initTotalPrice.toString() else "") }
     var startDate by remember { mutableStateOf(initStartDate) }
     var endDate by remember { mutableStateOf(initEndDate) }
-    var countGuestAdult by remember { mutableStateOf("") }
-    var countGuestChild by remember { mutableStateOf("") }
+
+    //строки в стандартном формате даты для простоты сравнения при сохранении формы
+    var startDateForCheck by remember { mutableStateOf(initStartDate) }
+    var endDateForCheck by remember { mutableStateOf(initEndDate) }
+
+    var countGuestAdult by remember { mutableStateOf(if (initCountGuestAdult != 0) initCountGuestAdult.toString() else "") }
+    var countGuestChild by remember { mutableStateOf(if (initCountGuestChild != 0) initCountGuestChild.toString() else "") }
+
+    val context = LocalContext.current
+
+
+
 
 
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(title) },
 
+
+
         text = {
 
-            val context = LocalContext.current
+
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
+
 
             Column(
                 modifier = Modifier
@@ -66,6 +80,7 @@ fun BookingInputDialog(
                     .padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ){
+
                 OutlinedTextField(
                     value = startDate,
                     onValueChange = { },
@@ -76,6 +91,7 @@ fun BookingInputDialog(
                             context,
                             { _, year, month, dayOfMonth ->
                                 startDate = "$dayOfMonth.${month + 1}.$year"
+                                startDateForCheck = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth)
                             },
                             year, month, day
                         ).show() }) {
@@ -91,13 +107,14 @@ fun BookingInputDialog(
                 OutlinedTextField(
                     value = endDate,
                     onValueChange = { },
-                    label = { Text("Дата заезда") },
+                    label = { Text("Дата выезда") },
                     readOnly = true,
                     trailingIcon = {
                         IconButton(onClick = { android.app.DatePickerDialog(
                             context,
                             { _, year, month, dayOfMonth ->
                                 endDate = "$dayOfMonth.${month + 1}.$year"
+                                endDateForCheck = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth)
                             },
                             year, month, day
                         ).show() }) {
@@ -140,8 +157,10 @@ fun BookingInputDialog(
             }
         },
 
+
         confirmButton = {
             TextButton(
+
                 onClick = {
 
                     val qtyAd = countGuestAdult.toIntOrNull() ?: 0
@@ -149,13 +168,18 @@ fun BookingInputDialog(
                     val prc = totalPrice.toDoubleOrNull() ?: 0.0
 
 
-                    if (true) {
+                    if (true && (endDateForCheck > startDateForCheck)) {
 
                         onConfirm(hotelId, prc, startDate, endDate, qtyAd, qtyChild)
                         onDismiss()
+                        Toast.makeText(context, "данные сохранены", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        Toast.makeText(context, "Проверьте корректность даты", Toast.LENGTH_SHORT).show()
                     }
                 }
-            ) {
+            )
+            {
                 Text("Подтвердить")
             }
         },

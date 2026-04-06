@@ -1,6 +1,7 @@
 package com.example.projectnavbottom.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -30,6 +35,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -40,6 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -263,8 +270,91 @@ fun SearchCard(){
             )
         }
     }
+
+    Column(modifier = Modifier
+        .padding(top = 20.dp)
+        .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+
+        ImageSlider()
+
+        Text(
+            text = "Получи незабываемые ощущения с нами",
+            fontSize = 20.sp,
+            color = Color.White,
+            modifier = Modifier.padding(top = 10.dp),
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+    }
+
+
+
 }
 
+@Composable
+fun ImageSlider() {
+    val images = listOf(
+        R.drawable.hotel1,
+        R.drawable.hotel2,
+        R.drawable.hotel3
+    )
+
+    var currentIndex by remember { mutableIntStateOf(0) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(0xFFE0E0E0))
+    ) {
+
+        Image(
+            painter = painterResource(id = images[currentIndex]),
+            contentDescription = "Slider image",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+
+
+        IconButton(
+            onClick = {
+                currentIndex =
+                    if (currentIndex > 0) currentIndex - 1
+                else images.size - 1
+            },
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(start = 8.dp)
+                .background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(50))
+        ) {
+            Icon(Icons.Default.ArrowBack,
+                contentDescription = "left",
+                tint = Color.White)
+        }
+
+        IconButton(
+            onClick = {
+                if (currentIndex + 1 < images.size) {
+                    currentIndex = currentIndex + 1
+                } else {
+                    currentIndex = 0
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 8.dp)
+                .background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(50))
+        ) {
+            Icon(Icons.Default.ArrowForward,
+                contentDescription = "right",
+                tint = Color.White)
+        }
+
+
+    }
+}
 
 
 @Preview(showBackground = true)

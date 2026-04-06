@@ -1,5 +1,6 @@
 package com.example.projectnavbottom.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -201,13 +203,24 @@ fun CardInfoScreen(hotel: Hotel,
             }
         }
 
-
+        val context = LocalContext.current
         if (showDialog) {
             BookingInputDialog(
                 title = "Создание брони",
                 onDismiss = { showDialog = false },
                 onConfirm = {hotelId, prc, startDate, endDate, countGuestAdult, countGuestChild ->
-                    viewModel.insertBooking( hotel.id, prc, startDate, endDate, countGuestAdult, countGuestChild)
+                    if (startDate.isNotBlank() &&
+                        endDate.isNotBlank() &&
+                        prc > 0 &&
+                        countGuestAdult > 0 &&
+                        countGuestChild >= 0){
+                        viewModel.insertBooking( hotel.id, prc, startDate, endDate, countGuestAdult, countGuestChild)
+                        Toast.makeText(context, "Бронь успешно добавлена", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        Toast.makeText(context, "Заполните все необходимые поля", Toast.LENGTH_SHORT).show()
+                    }
+
                 }
             )
         }
