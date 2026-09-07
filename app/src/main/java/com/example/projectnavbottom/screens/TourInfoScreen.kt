@@ -52,8 +52,10 @@ fun TourInfoScreen(
 )
 {
 
-    val allHotels by hotelViewModel.allHotels.collectAsState()
-    val hotel = allHotels.find {it.id == hotelId}
+    // исправлено с использованием стейт
+    val hotelState by hotelViewModel.uiState.collectAsState()
+
+    val hotel = hotelState.hotels.find {it.id == hotelId}
 
     if (hotel != null){
 
@@ -84,7 +86,7 @@ fun TourInfoScreen(
 }
 
 @Composable
-fun CardInfoScreen(hotel: Hotel,
+fun CardInfoScreen(hotel: com.example.projectnavbottom.domain.model.Hotel,
                    viewModel: BookingViewModel) {
 
     var showDialog by remember { mutableStateOf(false) }

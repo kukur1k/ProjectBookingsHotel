@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.toList
 class HotelRepositoryImpl(private val hotelDao: HotelDao) : HotelRepository {
 
 
-    override suspend fun getHotels(): Flow<List<com.example.projectnavbottom.domain.model.Hotel>> {
+    override fun getHotels(): Flow<List<com.example.projectnavbottom.domain.model.Hotel>> {
         return hotelDao.getAllHotels()
          .map { entities  ->
                 entities.map { entity -> entity.toDomain() }

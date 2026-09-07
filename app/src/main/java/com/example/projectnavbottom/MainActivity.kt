@@ -13,6 +13,7 @@ import com.example.projectnavbottom.data.dao.CountryDao
 import com.example.projectnavbottom.data.repository.BookingRepository
 import com.example.projectnavbottom.data.repository.CountryRepository
 import com.example.projectnavbottom.data.repository.HotelRepository
+import com.example.projectnavbottom.domain.repository.HotelRepository
 import com.example.projectnavbottom.navigation.MainAppScaffold
 import com.example.projectnavbottom.ui.theme.ProjectNavBottomTheme
 import kotlinx.coroutines.Dispatchers

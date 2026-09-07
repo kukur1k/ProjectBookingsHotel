@@ -8,29 +8,60 @@ import androidx.lifecycle.viewModelScope
 import com.example.dbtesting.data.entity.Country
 import com.example.dbtesting.data.entity.Hotel
 import com.example.projectnavbottom.data.repository.HotelRepository
+import com.example.projectnavbottom.domain.repository.HotelRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HotelViewModel(private val repository: HotelRepository): ViewModel(){
 
-    val allHotels: StateFlow<List<Hotel>> = repository.allHotels
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
+    private val _uiState = MutableStateFlow(HotelUiState())
+
+    val uiState: StateFlow<HotelUiState> = _uiState.asStateFlow()
+
+    init {
+        loadHotels()
+    }
+
+    // загрузка отелей из flow в лист и запись в состояние
+    private fun loadHotels() = viewModelScope.launch {
+        _uiState.update { it.copy(isLoading = true) }
+
+        repository.getHotels().collect { hotels ->
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    hotels = hotels
+                )
+            }
+        }
+    }
+
+//    val allHotels: StateFlow<List<Hotel>> = repository.allHotels
+//        .stateIn(
+//            scope = viewModelScope,
+//            started = SharingStarted.WhileSubscribed(5000),
+//            initialValue = emptyList()
+//        )
 
     var selectedHotel by mutableStateOf<Hotel?>(null)
         private set
 
-    fun selectHotel(hotel: Hotel){
-        selectedHotel = hotel
+
+    fun selectHotel(hotelId: Int){
+         _uiState.update { it.copy(selectedHotelId = hotelId) }
     }
 
-    fun clearSelectedHotel(hotel: Hotel){
-        selectedHotel = null
+    fun deselectHotel(hotelId: Int){
+        _uiState.update { it.copy(selectedHotelId = null) }
+    }
+
+    fun getSelectedHotel(): com.example.projectnavbottom.domain.model.Hotel? {
+        return  uiState.value.hotels.find { it.id == uiState.value.selectedHotelId }
     }
 
 

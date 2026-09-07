@@ -44,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.dbtesting.data.entity.Country
 import com.example.dbtesting.data.entity.Hotel
@@ -59,7 +60,9 @@ fun CatalogScreen(navController: NavHostController,
                   countryViewModel: CountryViewModel) {
     
 
-    val allHotels by hotelViewModel.allHotels.collectAsState()
+    // исправлено с использованием стейт
+    val hotelState by hotelViewModel.uiState.collectAsState()
+
     val allCountries by countryViewModel.allCountries.collectAsState()
 
 
@@ -75,7 +78,8 @@ fun CatalogScreen(navController: NavHostController,
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
-            items(allHotels) {hotel ->
+            // проходим по списку из стейт
+            items(hotelState.hotels) {hotel ->
                 val country = allCountries.find { it.id == hotel.countryId }
                 TourCard(
                     hotel = hotel,
@@ -89,7 +93,7 @@ fun CatalogScreen(navController: NavHostController,
 }
 
 @Composable
-fun TourCard(hotel: Hotel, navController: NavHostController, country: Country?){
+fun TourCard(hotel: com.example.projectnavbottom.domain.model.Hotel, navController: NavHostController, country: Country?){
 
 
 
