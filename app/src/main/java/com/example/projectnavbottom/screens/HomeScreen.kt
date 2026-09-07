@@ -67,7 +67,7 @@ fun HomeScreen() {
     Scaffold{ paddingValues ->
         Box(
             modifier = Modifier
-                .background(Color(0xFF8DF882))
+                .background(Color(0xFF8DF882).copy(alpha = 0.9f))
                 .fillMaxSize()
                 .padding(horizontal = 10.dp, vertical = 20.dp)
         ) {
@@ -281,7 +281,7 @@ fun SearchCard(){
         Text(
             text = "Получи незабываемые ощущения с нами",
             fontSize = 20.sp,
-            color = Color.White,
+            color = Color(0xFF1F19D9),
             modifier = Modifier.padding(top = 10.dp),
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
