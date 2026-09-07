@@ -13,8 +13,10 @@ class HotelRepositoryImpl(private val hotelDao: HotelDao) : HotelRepository {
 
 
     override suspend fun getHotels(): Flow<List<com.example.projectnavbottom.domain.model.Hotel>> {
-//        return hotelDao.getAllHotels()
-//         .toList().map { it. }
+        return hotelDao.getAllHotels()
+         .map { entities  ->
+                entities.map { entity -> entity.toDomain() }
+         }
     }
 
     override suspend fun insertHotels(hotel: com.example.projectnavbottom.domain.model.Hotel) {
@@ -46,7 +48,7 @@ fun com.example.projectnavbottom.domain.model.Hotel.toEntity() = Hotel(
     imgId = this.imgId
 )
 
-fun Hotel.toDomain() = Hotel(
+fun Hotel.toDomain() = com.example.projectnavbottom.domain.model.Hotel(
     id = this.id,
     title = this.title,
     description = this.description,

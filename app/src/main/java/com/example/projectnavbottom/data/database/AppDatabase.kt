@@ -15,7 +15,7 @@ import com.example.projectnavbottom.data.dao.CountryDao
 
 @Database(
     entities = [Country::class, Hotel::class, Booking::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase: RoomDatabase() {
