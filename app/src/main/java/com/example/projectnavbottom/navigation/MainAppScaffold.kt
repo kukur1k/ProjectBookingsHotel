@@ -24,6 +24,7 @@ import com.example.projectnavbottom.data.dao.CountryDao
 import com.example.projectnavbottom.data.repository.BookingRepository
 import com.example.projectnavbottom.data.repository.CountryRepository
 import com.example.projectnavbottom.data.repository.HotelRepositoryImpl
+import com.example.projectnavbottom.domain.repository.HotelRepository
 import com.example.projectnavbottom.viewmodel.BookingViewModel
 import com.example.projectnavbottom.viewmodel.CountryViewModel
 import com.example.projectnavbottom.viewmodel.HotelViewModel
@@ -31,7 +32,7 @@ import com.example.projectnavbottom.viewmodel.HotelViewModel
 @Composable
 fun MainAppScaffold(navController: NavHostController,
                     repositorybooking: BookingRepository,
-                    repositoryhotel: HotelRepositoryImpl,
+                    repositoryhotel: HotelRepository,
                     repositorycountry: CountryRepository) {
 
     val viewModelBooking: BookingViewModel = viewModel(
@@ -156,7 +157,7 @@ class BookingViewModelFactory(
 
 
 class HotelViewModelFactory(
-    private val repository: HotelRepositoryImpl
+    private val repository: HotelRepository
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

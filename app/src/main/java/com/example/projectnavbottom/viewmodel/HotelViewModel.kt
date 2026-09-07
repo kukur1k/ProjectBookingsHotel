@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dbtesting.data.entity.Country
 import com.example.dbtesting.data.entity.Hotel
-import com.example.projectnavbottom.data.repository.HotelRepository
+import com.example.projectnavbottom.data.repository.HotelRepositoryImpl
 import com.example.projectnavbottom.domain.repository.HotelRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -48,8 +48,8 @@ class HotelViewModel(private val repository: HotelRepository): ViewModel(){
 //            initialValue = emptyList()
 //        )
 
-    var selectedHotel by mutableStateOf<Hotel?>(null)
-        private set
+//    var selectedHotel by mutableStateOf<Hotel?>(null)
+//        private set
 
 
     fun selectHotel(hotelId: Int){
@@ -65,45 +65,45 @@ class HotelViewModel(private val repository: HotelRepository): ViewModel(){
     }
 
 
-    fun insertHotel(title: String,
-                    description: String,
-                    stars: Int,
-                    countryId: Int,
-                    imgId: Int){
-        viewModelScope.launch {
-            val hotel = Hotel(
-                title = title,
-                description = description,
-                stars = stars,
-                countryId = countryId,
-                imgId = imgId
-            )
-            repository.insert(hotel)
-        }
-    }
-
-    fun updateHotel(title: String,
-                    description: String,
-                    stars: Int,
-                    countryId: Int,
-                    imgId: Int){
-        viewModelScope.launch {
-            val hotel = Hotel(
-                title = title,
-                description = description,
-                stars = stars,
-                countryId = countryId,
-                imgId = imgId
-            )
-            repository.update(hotel)
-        }
-    }
-
-    fun deleteHotel(hotel: Hotel){
-        viewModelScope.launch {
-            repository.delete(hotel)
-        }
-    }
+//    fun insertHotel(title: String,
+//                    description: String,
+//                    stars: Int,
+//                    countryId: Int,
+//                    imgId: Int){
+//        viewModelScope.launch {
+//            val hotel = Hotel(
+//                title = title,
+//                description = description,
+//                stars = stars,
+//                countryId = countryId,
+//                imgId = imgId
+//            )
+//            repository.insert(hotel)
+//        }
+//    }
+//
+//    fun updateHotel(title: String,
+//                    description: String,
+//                    stars: Int,
+//                    countryId: Int,
+//                    imgId: Int){
+//        viewModelScope.launch {
+//            val hotel = Hotel(
+//                title = title,
+//                description = description,
+//                stars = stars,
+//                countryId = countryId,
+//                imgId = imgId
+//            )
+//            repository.update(hotel)
+//        }
+//    }
+//
+//    fun deleteHotel(hotel: Hotel){
+//        viewModelScope.launch {
+//            repository.delete(hotel)
+//        }
+//    }
 
 
 

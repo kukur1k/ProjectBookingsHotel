@@ -79,7 +79,9 @@ import java.util.Calendar
 fun BookingsScreen(navController: NavController, bookingViewModel: BookingViewModel, hotelViewModel: HotelViewModel) {
 
     val allBookings by bookingViewModel.allBooking.collectAsState()
-    val allHotels by hotelViewModel.allHotels.collectAsState()
+
+    // исправлено с использованием стейт
+    val hotelState by hotelViewModel.uiState.collectAsState()
 
 
 
@@ -116,7 +118,7 @@ fun BookingsScreen(navController: NavController, bookingViewModel: BookingViewMo
                 contentPadding = PaddingValues(16.dp)
             ) {
                 items(allBookings) {booking ->
-                    val hotel = allHotels.find { it.id == booking.hotelId }
+                    val hotel = hotelState.hotels.find { it.id == booking.hotelId }
                     if (hotel != null){
                         MyBookingCard(
                             booking = booking,
@@ -141,7 +143,7 @@ fun BookingsScreen(navController: NavController, bookingViewModel: BookingViewMo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyBookingCard(booking: Booking,
-                  hotel: Hotel,
+                  hotel: com.example.projectnavbottom.domain.model.Hotel,
                   navController: NavController,
                   bookingViewModel: BookingViewModel){
 

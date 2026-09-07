@@ -9,7 +9,7 @@ import com.example.dbtesting.data.entity.Booking
 import com.example.dbtesting.data.entity.Country
 import com.example.dbtesting.data.entity.Hotel
 import com.example.projectnavbottom.data.repository.BookingRepository
-import com.example.projectnavbottom.data.repository.HotelRepository
+import com.example.projectnavbottom.data.repository.HotelRepositoryImpl
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
