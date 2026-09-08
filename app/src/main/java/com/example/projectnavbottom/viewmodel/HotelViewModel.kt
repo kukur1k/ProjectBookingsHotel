@@ -41,15 +41,6 @@ class HotelViewModel(private val repository: HotelRepository): ViewModel(){
         }
     }
 
-//    val allHotels: StateFlow<List<Hotel>> = repository.allHotels
-//        .stateIn(
-//            scope = viewModelScope,
-//            started = SharingStarted.WhileSubscribed(5000),
-//            initialValue = emptyList()
-//        )
-
-//    var selectedHotel by mutableStateOf<Hotel?>(null)
-//        private set
 
 
     fun selectHotel(hotelId: Int){
@@ -65,6 +56,13 @@ class HotelViewModel(private val repository: HotelRepository): ViewModel(){
     }
 
 
+    fun insertHotel(hotel: com.example.projectnavbottom.domain.model.Hotel)
+    {
+        viewModelScope.launch {
+            repository.insertHotels(hotel)
+        }
+
+    }
 //    fun insertHotel(title: String,
 //                    description: String,
 //                    stars: Int,
