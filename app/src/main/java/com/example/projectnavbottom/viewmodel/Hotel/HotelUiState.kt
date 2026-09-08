@@ -1,4 +1,4 @@
-package com.example.projectnavbottom.viewmodel
+package com.example.projectnavbottom.viewmodel.Hotel
 
 import com.example.projectnavbottom.domain.model.Hotel
 

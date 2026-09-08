@@ -1,19 +1,11 @@
-package com.example.projectnavbottom.viewmodel
+package com.example.projectnavbottom.viewmodel.Hotel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dbtesting.data.entity.Country
-import com.example.dbtesting.data.entity.Hotel
-import com.example.projectnavbottom.data.repository.HotelRepositoryImpl
 import com.example.projectnavbottom.domain.repository.HotelRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 

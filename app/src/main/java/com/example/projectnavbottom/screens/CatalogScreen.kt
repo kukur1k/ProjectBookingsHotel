@@ -28,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,14 +43,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.dbtesting.data.entity.Country
-import com.example.dbtesting.data.entity.Hotel
 import com.example.projectnavbottom.navigation.Screen
 import com.example.projectnavbottom.ui.theme.ButtonTourInfo
 import com.example.projectnavbottom.viewmodel.CountryViewModel
-import com.example.projectnavbottom.viewmodel.HotelViewModel
+import com.example.projectnavbottom.viewmodel.Hotel.HotelViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

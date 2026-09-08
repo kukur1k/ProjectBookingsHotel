@@ -9,7 +9,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.projectnavbottom.data.dao.CountryDao
 import com.example.projectnavbottom.screens.BookingsInfoScreen
 import com.example.projectnavbottom.screens.BookingsScreen
 import com.example.projectnavbottom.screens.CatalogScreen
@@ -19,9 +18,9 @@ import com.example.projectnavbottom.screens.MyProfileScreen
 import com.example.projectnavbottom.screens.RegisterScreen
 import com.example.projectnavbottom.screens.SplashScreen
 import com.example.projectnavbottom.screens.TourInfoScreen
-import com.example.projectnavbottom.viewmodel.BookingViewModel
+import com.example.projectnavbottom.viewmodel.Booking.BookingViewModel
 import com.example.projectnavbottom.viewmodel.CountryViewModel
-import com.example.projectnavbottom.viewmodel.HotelViewModel
+import com.example.projectnavbottom.viewmodel.Hotel.HotelViewModel
 
 
 @Composable

@@ -10,7 +10,7 @@ import com.example.dbtesting.data.database.AppDatabase
 import com.example.dbtesting.data.entity.Country
 import com.example.dbtesting.data.entity.Hotel
 import com.example.projectnavbottom.data.dao.CountryDao
-import com.example.projectnavbottom.data.repository.BookingRepository
+import com.example.projectnavbottom.data.repository.BookingRepositoryImpl
 import com.example.projectnavbottom.data.repository.CountryRepository
 import com.example.projectnavbottom.data.repository.HotelRepositoryImpl
 import com.example.projectnavbottom.domain.repository.HotelRepository
@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
 
 
         val database = AppDatabase.getDatabase(this)
-        val repositorybooking = BookingRepository(database.BookingDao())
+        val repositorybooking = BookingRepositoryImpl(database.BookingDao())
         val repositoryhotel = HotelRepositoryImpl(database.HotelDao())
         val repositorycountry = CountryRepository(database.CountryDao())
 

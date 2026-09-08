@@ -20,14 +20,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.projectnavbottom.data.dao.CountryDao
-import com.example.projectnavbottom.data.repository.BookingRepository
 import com.example.projectnavbottom.data.repository.CountryRepository
-import com.example.projectnavbottom.data.repository.HotelRepositoryImpl
+import com.example.projectnavbottom.domain.repository.BookingRepository
 import com.example.projectnavbottom.domain.repository.HotelRepository
-import com.example.projectnavbottom.viewmodel.BookingViewModel
+import com.example.projectnavbottom.viewmodel.Booking.BookingViewModel
 import com.example.projectnavbottom.viewmodel.CountryViewModel
-import com.example.projectnavbottom.viewmodel.HotelViewModel
+import com.example.projectnavbottom.viewmodel.Hotel.HotelViewModel
 
 @Composable
 fun MainAppScaffold(navController: NavHostController,

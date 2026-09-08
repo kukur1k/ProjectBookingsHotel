@@ -1,13 +1,7 @@
 package com.example.projectnavbottom.screens
 
-import android.content.Context
-import android.provider.CalendarContract
-import android.widget.DatePicker
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,17 +20,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -53,32 +43,27 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.colorspace.WhitePoint
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.dbtesting.data.entity.Booking
-import com.example.dbtesting.data.entity.Hotel
 import com.example.projectnavbottom.R
 import com.example.projectnavbottom.navigation.Screen
 import com.example.projectnavbottom.ui.components.BookingInputDialog
 import com.example.projectnavbottom.ui.theme.ReBookingButton
 import com.example.projectnavbottom.ui.theme.StyledButton
-import com.example.projectnavbottom.viewmodel.BookingViewModel
-import com.example.projectnavbottom.viewmodel.HotelViewModel
-import java.sql.Date
+import com.example.projectnavbottom.viewmodel.Booking.BookingViewModel
+import com.example.projectnavbottom.viewmodel.Hotel.HotelViewModel
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookingsScreen(navController: NavController, bookingViewModel: BookingViewModel, hotelViewModel: HotelViewModel) {
 
-    val allBookings by bookingViewModel.allBooking.collectAsState()
+    val bookingState by bookingViewModel.uiState.collectAsState()
+
 
     // исправлено с использованием стейт
     val hotelState by hotelViewModel.uiState.collectAsState()
@@ -102,7 +87,7 @@ fun BookingsScreen(navController: NavController, bookingViewModel: BookingViewMo
     })
     { paddingValues ->
 
-        if (allBookings.isEmpty()) {
+        if (bookingState.bookings.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -117,7 +102,7 @@ fun BookingsScreen(navController: NavController, bookingViewModel: BookingViewMo
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                items(allBookings) {booking ->
+                items(bookingState.bookings) {booking ->
                     val hotel = hotelState.hotels.find { it.id == booking.hotelId }
                     if (hotel != null){
                         MyBookingCard(
@@ -142,7 +127,7 @@ fun BookingsScreen(navController: NavController, bookingViewModel: BookingViewMo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyBookingCard(booking: Booking,
+fun MyBookingCard(booking: com.example.projectnavbottom.domain.model.Booking,
                   hotel: com.example.projectnavbottom.domain.model.Hotel,
                   navController: NavController,
                   bookingViewModel: BookingViewModel){
@@ -368,7 +353,7 @@ fun MyBookingCard(booking: Booking,
                         IconButton(
                             modifier = Modifier.weight(1f),
                             onClick = {
-                                bookingViewModel.selectBooking(booking)
+                                bookingViewModel.selectBooking(booking.id)
                                 showDialog = true
                             }) {
                             Icon(
@@ -401,12 +386,16 @@ fun MyBookingCard(booking: Booking,
                             initCountGuestChild= selectedItem.countGuestChild,
                             onDismiss = {
                                 showDialog = false
-                                bookingViewModel.clearSelectedBooking(booking)
+                                bookingViewModel.deselectBooking(booking.id)
                             },
                             onConfirm = { hotelId, prc, startDate, endDate, countGuestAdult, countGuestChild ->
-                                bookingViewModel.updateBooking(
-                                    booking.id, hotel.id, prc, startDate, endDate, countGuestAdult, countGuestChild
-                                )
+                                val booking = com.example.projectnavbottom.domain.model.Booking(hotelId = hotel.id,
+                                    totalPrice = prc,
+                                    startDate = startDate,
+                                    endDate = endDate,
+                                    countGuestAdult = countGuestAdult,
+                                    countGuestChild = countGuestChild)
+                                bookingViewModel.updateBooking(booking)
                             }
                         )
                     }

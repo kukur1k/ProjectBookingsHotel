@@ -36,12 +36,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.dbtesting.data.entity.Hotel
 import com.example.projectnavbottom.R
+import com.example.projectnavbottom.domain.model.Booking
 import com.example.projectnavbottom.ui.components.BookingInputDialog
 import com.example.projectnavbottom.ui.theme.StyledButton
-import com.example.projectnavbottom.viewmodel.BookingViewModel
-import com.example.projectnavbottom.viewmodel.HotelViewModel
+import com.example.projectnavbottom.viewmodel.Booking.BookingViewModel
+import com.example.projectnavbottom.viewmodel.Hotel.HotelViewModel
 
 @Composable
 fun TourInfoScreen(
@@ -54,6 +54,7 @@ fun TourInfoScreen(
 
     // исправлено с использованием стейт
     val hotelState by hotelViewModel.uiState.collectAsState()
+    val bookingState by bookingviewModel.uiState.collectAsState()
 
     val hotel = hotelState.hotels.find {it.id == hotelId}
 
@@ -216,7 +217,13 @@ fun CardInfoScreen(hotel: com.example.projectnavbottom.domain.model.Hotel,
                         prc > 0 &&
                         countGuestAdult > 0 &&
                         countGuestChild >= 0){
-                        viewModel.insertBooking( hotel.id, prc, startDate, endDate, countGuestAdult, countGuestChild)
+                        val booking = Booking(hotelId = hotel.id,
+                            totalPrice = prc,
+                            startDate = startDate,
+                            endDate = endDate,
+                            countGuestAdult = countGuestAdult,
+                            countGuestChild = countGuestChild)
+                        viewModel.insertBooking(booking)
                         Toast.makeText(context, "Бронь успешно добавлена", Toast.LENGTH_SHORT).show()
                     }
                     else{
