@@ -28,6 +28,16 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
         loadBookings()
     }
 
+    val state: BookingUiState get() = _uiState.value
+
+//    fun updateState(newState: BookingUiState) {
+//        _uiState.value = newState
+//    }
+
+    fun updateState(update: (BookingUiState) -> BookingUiState) {
+        _uiState.update { update(it) }
+    }
+
     private fun loadBookings() = viewModelScope.launch {
         _uiState.update { it.copy(isLoading = true) }
 

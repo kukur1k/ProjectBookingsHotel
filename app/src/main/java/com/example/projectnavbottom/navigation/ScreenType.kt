@@ -11,6 +11,7 @@ sealed class ScreenType{
 sealed class Screen(val route: String, val ScreenType: ScreenType){
 
     object Home: Screen(route = "home", ScreenType.WithBottomNav)
+
     object Catalog: Screen(route = "catalog", ScreenType.WithBottomNav)
     object Bookings: Screen(route = "bookings", ScreenType.WithBottomNav)
     object Profile: Screen(route = "profile", ScreenType.WithBottomNav)
@@ -20,6 +21,12 @@ sealed class Screen(val route: String, val ScreenType: ScreenType){
     object TourInfo: Screen(route = "tour_info/{hotelId}", ScreenType.WithoutBottomNav){
         fun passId(hotelId: Int): String {
             return "tour_info/$hotelId"
+        }
+    }
+
+    object BookingForm: Screen(route = "booking_form/{hotelId}", ScreenType.WithoutBottomNav){
+        fun passId(hotelId: Int): String {
+            return "booking_form/$hotelId"
         }
     }
 

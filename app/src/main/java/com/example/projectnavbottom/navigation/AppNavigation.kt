@@ -9,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.projectnavbottom.screens.BookingFormScreen
 import com.example.projectnavbottom.screens.BookingsInfoScreen
 import com.example.projectnavbottom.screens.BookingsScreen
 import com.example.projectnavbottom.screens.CatalogScreen
@@ -81,7 +82,20 @@ fun AppNavigation(navController: NavHostController,
                 onBack = {navController.navigateUp()},
                 bookingviewModel = viewModelBooking,
                 hotelViewModel = viewModelHotel,
-                hotelId = hotelId
+                hotelId = hotelId,
+                navController = navController
+            )
+        }
+
+        composable(Screen.BookingForm.route,
+            arguments = listOf(navArgument("hotelId") {type = NavType.IntType})
+        ) { backStackEntry ->
+            val hotelId = backStackEntry.arguments?.getInt("hotelId") ?: 1
+            BookingFormScreen(
+                bookingviewModel = viewModelBooking,
+                hotelViewModel = viewModelHotel,
+                hotelId = hotelId,
+                navController = navController
             )
         }
 

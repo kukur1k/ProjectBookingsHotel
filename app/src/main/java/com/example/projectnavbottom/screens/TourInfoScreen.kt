@@ -36,8 +36,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.projectnavbottom.R
 import com.example.projectnavbottom.domain.model.Booking
+import com.example.projectnavbottom.navigation.Screen
 import com.example.projectnavbottom.ui.components.BookingInputDialog
 import com.example.projectnavbottom.ui.theme.StyledButton
 import com.example.projectnavbottom.viewmodel.Booking.BookingViewModel
@@ -48,7 +50,8 @@ fun TourInfoScreen(
     onBack: () -> Boolean,
     bookingviewModel: BookingViewModel,
     hotelViewModel: HotelViewModel,
-    hotelId: Int
+    hotelId: Int,
+    navController: NavHostController
 )
 {
 
@@ -69,7 +72,9 @@ fun TourInfoScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    CardInfoScreen(hotel = hotel, viewModel = bookingviewModel)
+                    CardInfoScreen(hotel = hotel,
+                        bookingviewModel = bookingviewModel,
+                        navController = navController )
                 }
             }
         }
@@ -88,9 +93,11 @@ fun TourInfoScreen(
 
 @Composable
 fun CardInfoScreen(hotel: com.example.projectnavbottom.domain.model.Hotel,
-                   viewModel: BookingViewModel) {
+                   bookingviewModel: BookingViewModel,
+                   navController: NavHostController) {
 
-    var showDialog by remember { mutableStateOf(false) }
+//    var showDialog by remember { mutableStateOf(false) }
+    val bookingState by bookingviewModel.uiState.collectAsState()
 
     Column() {
         Image(
@@ -197,7 +204,7 @@ fun CardInfoScreen(hotel: com.example.projectnavbottom.domain.model.Hotel,
             modifier = Modifier.fillMaxWidth()) {
             StyledButton(
                 backColor = Color(0xFF1F19D9),
-                onClick = { showDialog = true }
+                onClick = { navController.navigate(Screen.BookingForm.passId(hotel.id))}
             ) {
                 Text(
                     text = "Забронировать",
@@ -206,33 +213,33 @@ fun CardInfoScreen(hotel: com.example.projectnavbottom.domain.model.Hotel,
             }
         }
 
-        val context = LocalContext.current
-        if (showDialog) {
-            BookingInputDialog(
-                title = "Создание брони",
-                onDismiss = { showDialog = false },
-                onConfirm = {hotelId, prc, startDate, endDate, countGuestAdult, countGuestChild ->
-                    if (startDate.isNotBlank() &&
-                        endDate.isNotBlank() &&
-                        prc > 0 &&
-                        countGuestAdult > 0 &&
-                        countGuestChild >= 0){
-                        val booking = Booking(hotelId = hotel.id,
-                            totalPrice = prc,
-                            startDate = startDate,
-                            endDate = endDate,
-                            countGuestAdult = countGuestAdult,
-                            countGuestChild = countGuestChild)
-                        viewModel.insertBooking(booking)
-                        Toast.makeText(context, "Бронь успешно добавлена", Toast.LENGTH_SHORT).show()
-                    }
-                    else{
-                        Toast.makeText(context, "Заполните все необходимые поля", Toast.LENGTH_SHORT).show()
-                    }
-
-                }
-            )
-        }
+//        val context = LocalContext.current
+//        if (showDialog) {
+//            BookingInputDialog(
+//                title = "Создание брони",
+//                onDismiss = { showDialog = false },
+//                onConfirm = {hotelId, prc, startDate, endDate, countGuestAdult, countGuestChild ->
+//                    if (startDate.isNotBlank() &&
+//                        endDate.isNotBlank() &&
+//                        prc > 0 &&
+//                        countGuestAdult > 0 &&
+//                        countGuestChild >= 0){
+//                        val booking = Booking(hotelId = hotel.id,
+//                            totalPrice = prc,
+//                            startDate = startDate,
+//                            endDate = endDate,
+//                            countGuestAdult = countGuestAdult,
+//                            countGuestChild = countGuestChild)
+//                        viewModel.insertBooking(booking)
+//                        Toast.makeText(context, "Бронь успешно добавлена", Toast.LENGTH_SHORT).show()
+//                    }
+//                    else{
+//                        Toast.makeText(context, "Заполните все необходимые поля", Toast.LENGTH_SHORT).show()
+//                    }
+//
+//                }
+//            )
+//        }
 
 
         Spacer(modifier = Modifier.height(20.dp))
