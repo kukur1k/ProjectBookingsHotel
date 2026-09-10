@@ -353,7 +353,7 @@ fun MyBookingCard(booking: com.example.projectnavbottom.domain.model.Booking,
                         IconButton(
                             modifier = Modifier.weight(1f),
                             onClick = {
-                                bookingViewModel.selectBooking(booking.id)
+                                bookingViewModel.updateBooking(booking)
                                 showDialog = true
                             }) {
                             Icon(

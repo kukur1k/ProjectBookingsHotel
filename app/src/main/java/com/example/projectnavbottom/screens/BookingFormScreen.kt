@@ -1,6 +1,8 @@
 package com.example.projectnavbottom.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -171,17 +173,21 @@ fun BookingFormScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            StyledButton(backColor = Color(0xFF6B8BE2), onClick = {
-                val booking = Booking(hotelId = hotel?.id ?: 0,
-                    totalPrice = bookingState.dialogBooking.totalPrice.toDouble(),
-                    startDate = bookingState.dialogBooking.startDate,
-                    endDate = bookingState.dialogBooking.endDate,
-                    countGuestAdult = bookingState.dialogBooking.countGuestAdult.toInt(),
-                    countGuestChild = bookingState.dialogBooking.countGuestChild.toInt())
-                bookingviewModel.insertBooking(booking)
-            }){
-                Text("Забронировать")
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(horizontalArrangement = Arrangement.Center) {
+                StyledButton(modifier = Modifier.fillMaxWidth(), backColor = Color(0xFF3361E0), onClick = {
+                    val booking = Booking(hotelId = hotel?.id ?: 0,
+                        totalPrice = bookingState.dialogBooking.totalPrice.toDouble(),
+                        startDate = bookingState.dialogBooking.startDate,
+                        endDate = bookingState.dialogBooking.endDate,
+                        countGuestAdult = bookingState.dialogBooking.countGuestAdult.toInt(),
+                        countGuestChild = bookingState.dialogBooking.countGuestChild.toInt())
+                    bookingviewModel.insertBooking(booking)
+                }){
+                    Text("Забронировать")
+                }
             }
+
 
         }
 

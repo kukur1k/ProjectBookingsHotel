@@ -30,9 +30,6 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
 
     val state: BookingUiState get() = _uiState.value
 
-//    fun updateState(newState: BookingUiState) {
-//        _uiState.value = newState
-//    }
 
     fun updateState(update: (BookingUiState) -> BookingUiState) {
         _uiState.update { update(it) }
@@ -51,16 +48,6 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
         }
     }
 
-    fun showBookingDialog(hotelId: Int){
-        _uiState.update { it.copy(
-            isDialogVisible = true,
-            dialogBooking = BookingDialogData(hotelId = hotelId)
-        ) }
-    }
-
-    fun hideDialog() {
-        _uiState.update { it.copy(isDialogVisible = false) }
-    }
 
     var selectedBooking by mutableStateOf<Booking?>(null)
         private set
@@ -81,6 +68,7 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
     {
         viewModelScope.launch {
             repository.insertBooking(booking)
+            loadBookings();
         }
 
     }
@@ -90,6 +78,7 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
     {
         viewModelScope.launch {
             repository.updateBooking(booking)
+            loadBookings();
         }
 
     }
@@ -97,6 +86,7 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
     fun deleteBooking(booking: com.example.projectnavbottom.domain.model.Booking){
         viewModelScope.launch {
             repository.deleteBooking(booking)
+            loadBookings()
         }
     }
 
