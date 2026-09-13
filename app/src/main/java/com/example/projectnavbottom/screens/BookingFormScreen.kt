@@ -176,13 +176,7 @@ fun BookingFormScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Row(horizontalArrangement = Arrangement.Center) {
                 StyledButton(modifier = Modifier.fillMaxWidth(), backColor = Color(0xFF3361E0), onClick = {
-                    val booking = Booking(hotelId = hotel?.id ?: 0,
-                        totalPrice = bookingState.dialogBooking.totalPrice.toDouble(),
-                        startDate = bookingState.dialogBooking.startDate,
-                        endDate = bookingState.dialogBooking.endDate,
-                        countGuestAdult = bookingState.dialogBooking.countGuestAdult.toInt(),
-                        countGuestChild = bookingState.dialogBooking.countGuestChild.toInt())
-                    bookingviewModel.insertBooking(booking)
+                    bookingviewModel.EnterBooking(hotelId)
                 }){
                     Text("Забронировать")
                 }

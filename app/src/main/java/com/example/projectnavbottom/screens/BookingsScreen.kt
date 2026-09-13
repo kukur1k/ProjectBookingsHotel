@@ -142,7 +142,7 @@ fun MyBookingCard(booking: com.example.projectnavbottom.domain.model.Booking,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
-        val selectedItem = bookingViewModel.selectedBooking
+        val selectedItem = bookingViewModel.selectededBooking
 
         Column {
             Row() {

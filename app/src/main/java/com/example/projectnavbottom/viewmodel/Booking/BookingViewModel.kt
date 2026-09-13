@@ -5,10 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dbtesting.data.entity.Booking
 import com.example.projectnavbottom.data.repository.BookingRepositoryImpl
+import com.example.projectnavbottom.domain.model.Booking
 import com.example.projectnavbottom.domain.model.BookingDialogData
+import com.example.projectnavbottom.domain.model.BookingDialogErrors
+import com.example.projectnavbottom.domain.model.ValidationResult
 import com.example.projectnavbottom.domain.repository.BookingRepository
+import com.example.projectnavbottom.domain.usecases.ValidateBookingUseCase
 import com.example.projectnavbottom.viewmodel.Hotel.HotelUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -49,7 +52,7 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
     }
 
 
-    var selectedBooking by mutableStateOf<Booking?>(null)
+    var selectededBooking by mutableStateOf<Booking?>(null)
         private set
 
     fun selectBooking(bookingId: Int){
@@ -62,6 +65,29 @@ class BookingViewModel(private val repository: BookingRepository): ViewModel(){
 
     fun getSelectedBooking(): com.example.projectnavbottom.domain.model.Booking? {
         return  uiState.value.bookings.find { it.id == uiState.value.selectedBookingId }
+    }
+
+    fun EnterBooking(hotelId: Int){
+
+        val booking = com.example.projectnavbottom.domain.model.Booking(hotelId = hotelId,
+            totalPrice = state.dialogBooking.totalPrice.toDouble(),
+            startDate = state.dialogBooking.startDate,
+            endDate = state.dialogBooking.endDate,
+            countGuestAdult = state.dialogBooking.countGuestAdult.toInt(),
+            countGuestChild = state.dialogBooking.countGuestChild.toInt())
+
+        val validator = ValidateBookingUseCase()
+        val result = validator(booking, hotelId)
+        if (!result.isValid){
+            _uiState.update { it.copy(error = result.errors) }
+            return
+        }
+
+        viewModelScope.launch {
+            repository.insertBooking(booking)
+            _uiState.update { it.copy(error = BookingDialogErrors()) }
+        }
+
     }
 
     fun insertBooking(booking: com.example.projectnavbottom.domain.model.Booking)
